@@ -21,12 +21,15 @@ import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static java.lang.System.getLogger;
 
 
 public final class blockPlaceCheck implements Listener
@@ -55,8 +58,6 @@ public final class blockPlaceCheck implements Listener
         PlayerInventory inventory = e.getPlayer().getInventory();
         ItemStack secondHand = inventory.getItemInOffHand();
 
-
-
         int x = e.getBlock().getX();
         int y = e.getBlock().getY();
         int z = e.getBlock().getZ();
@@ -71,9 +72,9 @@ public final class blockPlaceCheck implements Listener
             {
                 if (main.Global.configToggleBlockCheck_50)
                 {
-                    if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
+                    if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
                 }
-                else blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
+                else blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
             }
 
         }
@@ -81,9 +82,9 @@ public final class blockPlaceCheck implements Listener
         {
             if (main.Global.configToggleBlockCheck_50)
             {
-                if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
+                if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
             }
-            else blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
+            else blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
         }
     }
 
@@ -96,6 +97,8 @@ public final class blockPlaceCheck implements Listener
     //Why the fix? If you interact with a portal, that can also trigger a removal if limited bc the frame block is updated.
     private static void againstEndPortalCheck(BlockPlaceEvent e, Player player, ItemStack secondHand, PlayerInventory inventory)
     {
+        if (player.hasPermission("chunkShield.blockBypass")) return;
+
         if (e.getBlockAgainst().getType() == Material.END_PORTAL_FRAME)
         {
             // Main Hand Check
@@ -104,7 +107,6 @@ public final class blockPlaceCheck implements Listener
                 // Check1
                 if (secondHand.getType() == Material.END_PORTAL_FRAME)
                 {
-                    if (player.hasPermission("chunkShield.blockBypass")) return;
                     e.setCancelled(true);
                     main.Global.blocksPrevented++;
                     inventory.setItemInOffHand(null);
@@ -117,7 +119,6 @@ public final class blockPlaceCheck implements Listener
                 // Check1
                 if (player.getInventory().getItemInMainHand().getType() == Material.END_PORTAL_FRAME)
                 {
-                    if (player.hasPermission("chunkShield.blockBypass")) return;
                     e.setCancelled(true);
                     main.Global.blocksPrevented++;
                     inventory.remove(Material.END_PORTAL_FRAME);
@@ -126,7 +127,6 @@ public final class blockPlaceCheck implements Listener
         }
         else
         {
-            if (player.hasPermission("chunkShield.blockBypass")) return;
             e.setCancelled(true);
             main.Global.blocksPrevented++;
             inventory.remove(Material.END_PORTAL_FRAME);
@@ -134,8 +134,10 @@ public final class blockPlaceCheck implements Listener
         }
     }
     /////////////////////////////////////////////////////////////////////////////
-    private static void blockChunkCheck(Chunk chunk, Material placedType, int x, int y, int z, String playerName, Material material, Block block, Player player)
+    private static void blockChunkCheck(BlockPlaceEvent e, Chunk chunk, Material placedType, int x, int y, int z, String playerName, Material material, Block block, Player player)
     {
+        if (player.hasPermission("chunkShield.blockBypass")) return;
+
         // 1.0.5 Fix. If the list contains the block placed then check, otherwise don't.
         if (main.Global.theBlockLimits.containsKey(material))
         {
@@ -155,8 +157,8 @@ public final class blockPlaceCheck implements Listener
             }
             else if (environment == World.Environment.THE_END)
             {
-                main.Global.minY = 0;
-                main.Global.maxY = 128;
+                main.Global.minY = world.getMinHeight();
+                main.Global.maxY = world.getMaxHeight();
             }
 
             // Iterate each configured block type and prune extras within this chunk
@@ -189,34 +191,51 @@ public final class blockPlaceCheck implements Listener
                         {
                             if (main.Global.configToggleAlertBlockLimit) alertBLOCKLimitReached(x, y, z, playerName, b, world);
 
-                            if (player.hasPermission("chunkShield.blockBypass")) return;
-                            if (player.getGameMode() != GameMode.CREATIVE)b.breakNaturally();
-                            else b.setType(Material.AIR, false);
+                            if (player.getGameMode() == GameMode.CREATIVE) b.setType(Material.AIR, false);
+                            else
+                            {
+                                if (b.getType() == block.getType()) e.setCancelled(true);
+                                else b.breakNaturally();
+                            }
                             if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b.getLocation().toCenterLocation(), 4);
-
                         }
                         else
                         {
                             if (main.Global.configToggleAlertBlockLimit) alertBLOCKLimitReached(x, y, z, playerName, b, world);
-                            if (player.hasPermission("chunkShield.blockBypass")) return;
 
                             // 1.0.7 Fix - Material.REDSTONE_WIRE is not considered TRUE in Material.isItem().
                             // This fix has been updated to handle any non-item materials from an added list above.
                             // Such as STRING being transformed to TRIPWIRE
                             if (Global.nonItemBlocks.contains(b.getType()) && main.Global.theBlockLimits.containsKey(b.getType()))
                             {
-                                if (player.getGameMode() == GameMode.CREATIVE) b.setType(Material.AIR);
-                                else b.breakNaturally();
+                                if (player.getGameMode() == GameMode.CREATIVE) b.setType(Material.AIR, false);
+                                else
+                                {
+                                    if (b.getType() == block.getType()) e.setCancelled(true);
+                                    else b.breakNaturally();
+                                }
                                 if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b.getLocation().toCenterLocation(), 4);
                             }
-                            else b.setType(Material.STONE, false); // no physics to avoid cascades
+                            else
+                            {
+                                b.setType(Material.STONE, false); // no physics to avoid cascades
+
+                                player.getServer().getLogger().warning("!!! --- NON-ITEM BLOCK --- !!!  ");
+                                player.getServer().getLogger().warning("■");
+                                player.getServer().getLogger().warning(b.getType() + " just turned into Stone.");
+                                player.getServer().getLogger().warning("Location: " + world.getName() + " [" + x + ", " + y + ", " + z + "]");
+                                player.getServer().getLogger().warning("Report this message to developer to be fixed.");
+                                player.getServer().getLogger().warning("ERROR: " + b.getType() + " is a non-item block.");
+                                player.getServer().getLogger().warning("■");
+                                player.getServer().getLogger().warning("!!! --- NON-ITEM BLOCK --- !!!  ");
+                            }
                         }
                         main.Global.blocksPrevented++;
                     }
                 }
             }
         }
-        // ===== 2) BLOCKS: collective DOOR/TRAPDOOR cap =====
+        // Collective Check (Doors | Trapdoors | Gates)
         else if (block.getBlockData() instanceof Door || block.getBlockData() instanceof TrapDoor || block.getBlockData() instanceof Gate)
         {
             if (main.Global.configCollectiveDoorLimit >= 0)
@@ -259,7 +278,6 @@ public final class blockPlaceCheck implements Listener
                                 {
                                     if (main.Global.configToggleAlertBlockLimit) alertDOORLimitReached(x, y, z, playerName, world);
 
-                                    if (player.hasPermission("chunkShield.blockBypass")) return;
                                     if (player.getGameMode() != GameMode.CREATIVE)b1.breakNaturally();
                                     else
                                     {
@@ -279,7 +297,6 @@ public final class blockPlaceCheck implements Listener
                                 {
                                     if (main.Global.configToggleAlertBlockLimit) alertDOORLimitReached(x, y, z, playerName, world);
 
-                                    if (player.hasPermission("chunkShield.blockBypass")) return;
                                     if (player.getGameMode() != GameMode.CREATIVE)b1.breakNaturally();
                                     else b1.setType(Material.AIR, false);
                                     if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b1.getLocation().toCenterLocation(), 4);
