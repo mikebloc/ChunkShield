@@ -1,35 +1,24 @@
 package me.mikebloc.chunkShield.listeners;
 
-import me.mikebloc.chunkShield.languages.ES;
-import me.mikebloc.chunkShield.languages.RU;
 import me.mikebloc.chunkShield.main;
-import me.mikebloc.chunkShield.languages.EN;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.type.Gate;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Door;
-import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static java.lang.System.getLogger;
 
 
 public final class blockPlaceCheck implements Listener
@@ -58,23 +47,25 @@ public final class blockPlaceCheck implements Listener
         PlayerInventory inventory = e.getPlayer().getInventory();
         ItemStack secondHand = inventory.getItemInOffHand();
 
+
+
         int x = e.getBlock().getX();
         int y = e.getBlock().getY();
         int z = e.getBlock().getZ();
 
-        @NotNull String playerName = e.getPlayer().getName();
+        String playerName = e.getPlayer().getName();
 
         // Patch to prevent unnecessary portal destruction.
-        if (block.getType() == Material.END_PORTAL_FRAME)
+        if (block.getType() == Material.ENDER_PORTAL_FRAME)
         {
             if (main.Global.configToggleEndPortalFix) againstEndPortalCheck(e, player, secondHand, inventory);
             else
             {
                 if (main.Global.configToggleBlockCheck_50)
                 {
-                    if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
+                    if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
                 }
-                else blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
+                else blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
             }
 
         }
@@ -82,9 +73,9 @@ public final class blockPlaceCheck implements Listener
         {
             if (main.Global.configToggleBlockCheck_50)
             {
-                if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
+                if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
             }
-            else blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
+            else blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
         }
     }
 
@@ -97,47 +88,46 @@ public final class blockPlaceCheck implements Listener
     //Why the fix? If you interact with a portal, that can also trigger a removal if limited bc the frame block is updated.
     private static void againstEndPortalCheck(BlockPlaceEvent e, Player player, ItemStack secondHand, PlayerInventory inventory)
     {
-        if (player.hasPermission("chunkShield.blockBypass")) return;
-
-        if (e.getBlockAgainst().getType() == Material.END_PORTAL_FRAME)
+        if (e.getBlockAgainst().getType() == Material.ENDER_PORTAL_FRAME)
         {
             // Main Hand Check
-            if (player.getInventory().getItemInMainHand().getType() == Material.ENDER_EYE)
+            if (player.getInventory().getItemInMainHand().getType() == Material.EYE_OF_ENDER)
             {
                 // Check1
-                if (secondHand.getType() == Material.END_PORTAL_FRAME)
+                if (secondHand.getType() == Material.ENDER_PORTAL_FRAME)
                 {
+                    if (player.hasPermission("chunkShield.blockBypass")) return;
                     e.setCancelled(true);
                     main.Global.blocksPrevented++;
                     inventory.setItemInOffHand(null);
-                    inventory.remove(Material.END_PORTAL_FRAME);
+                    inventory.remove(Material.ENDER_PORTAL_FRAME);
                 }
             }
             // Offhand Check
-            else if (player.getInventory().getItemInOffHand().getType() == Material.ENDER_EYE)
+            else if (player.getInventory().getItemInOffHand().getType() == Material.EYE_OF_ENDER)
             {
                 // Check1
-                if (player.getInventory().getItemInMainHand().getType() == Material.END_PORTAL_FRAME)
+                if (player.getInventory().getItemInMainHand().getType() == Material.ENDER_PORTAL_FRAME)
                 {
+                    if (player.hasPermission("chunkShield.blockBypass")) return;
                     e.setCancelled(true);
                     main.Global.blocksPrevented++;
-                    inventory.remove(Material.END_PORTAL_FRAME);
+                    inventory.remove(Material.ENDER_PORTAL_FRAME);
                 }
             }
         }
         else
         {
+            if (player.hasPermission("chunkShield.blockBypass")) return;
             e.setCancelled(true);
             main.Global.blocksPrevented++;
-            inventory.remove(Material.END_PORTAL_FRAME);
-            if (secondHand.getType() == Material.END_PORTAL_FRAME) inventory.setItemInOffHand(null);
+            inventory.remove(Material.ENDER_PORTAL_FRAME);
+            if (secondHand.getType() == Material.ENDER_PORTAL_FRAME) inventory.setItemInOffHand(null);
         }
     }
     /////////////////////////////////////////////////////////////////////////////
-    private static void blockChunkCheck(BlockPlaceEvent e, Chunk chunk, Material placedType, int x, int y, int z, String playerName, Material material, Block block, Player player)
+    private static void blockChunkCheck(Chunk chunk, Material placedType, int x, int y, int z, String playerName, Material material, Block block, Player player)
     {
-        if (player.hasPermission("chunkShield.blockBypass")) return;
-
         // 1.0.5 Fix. If the list contains the block placed then check, otherwise don't.
         if (main.Global.theBlockLimits.containsKey(material))
         {
@@ -157,8 +147,8 @@ public final class blockPlaceCheck implements Listener
             }
             else if (environment == World.Environment.THE_END)
             {
-                main.Global.minY = world.getMinHeight();
-                main.Global.maxY = world.getMaxHeight();
+                main.Global.minY = 0;
+                main.Global.maxY = 128;
             }
 
             // Iterate each configured block type and prune extras within this chunk
@@ -191,52 +181,35 @@ public final class blockPlaceCheck implements Listener
                         {
                             if (main.Global.configToggleAlertBlockLimit) alertBLOCKLimitReached(x, y, z, playerName, b, world);
 
-                            if (player.getGameMode() == GameMode.CREATIVE) b.setType(Material.AIR, false);
-                            else
-                            {
-                                if (b.getType() == block.getType()) e.setCancelled(true);
-                                else b.breakNaturally();
-                            }
+                            if (player.hasPermission("chunkShield.blockBypass")) return;
+                            if (player.getGameMode() != GameMode.CREATIVE)b.breakNaturally();
+                            else b.setType(Material.AIR, false);
                             if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b.getLocation().toCenterLocation(), 4);
+
                         }
                         else
                         {
                             if (main.Global.configToggleAlertBlockLimit) alertBLOCKLimitReached(x, y, z, playerName, b, world);
+                            if (player.hasPermission("chunkShield.blockBypass")) return;
 
                             // 1.0.7 Fix - Material.REDSTONE_WIRE is not considered TRUE in Material.isItem().
                             // This fix has been updated to handle any non-item materials from an added list above.
                             // Such as STRING being transformed to TRIPWIRE
                             if (Global.nonItemBlocks.contains(b.getType()) && main.Global.theBlockLimits.containsKey(b.getType()))
                             {
-                                if (player.getGameMode() == GameMode.CREATIVE) b.setType(Material.AIR, false);
-                                else
-                                {
-                                    if (b.getType() == block.getType()) e.setCancelled(true);
-                                    else b.breakNaturally();
-                                }
+                                if (player.getGameMode() == GameMode.CREATIVE) b.setType(Material.AIR);
+                                else b.breakNaturally();
                                 if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b.getLocation().toCenterLocation(), 4);
                             }
-                            else
-                            {
-                                b.setType(Material.STONE, false); // no physics to avoid cascades
-
-                                player.getServer().getLogger().warning("!!! --- NON-ITEM BLOCK --- !!!  ");
-                                player.getServer().getLogger().warning("■");
-                                player.getServer().getLogger().warning(b.getType() + " just turned into Stone.");
-                                player.getServer().getLogger().warning("Location: " + world.getName() + " [" + x + ", " + y + ", " + z + "]");
-                                player.getServer().getLogger().warning("Report this message to developer to be fixed.");
-                                player.getServer().getLogger().warning("ERROR: " + b.getType() + " is a non-item block.");
-                                player.getServer().getLogger().warning("■");
-                                player.getServer().getLogger().warning("!!! --- NON-ITEM BLOCK --- !!!  ");
-                            }
+                            else b.setType(Material.STONE, false); // no physics to avoid cascades
                         }
                         main.Global.blocksPrevented++;
                     }
                 }
             }
         }
-        // Collective Check (Doors | Trapdoors | Gates)
-        else if (block.getBlockData() instanceof Door || block.getBlockData() instanceof TrapDoor || block.getBlockData() instanceof Gate)
+        // ===== 2) BLOCKS: collective DOOR/TRAPDOOR cap =====
+        else if (material.name().endsWith("_DOOR") || material.name().endsWith("_TRAP_DOOR") || material.name().endsWith("_FENCE_GATE"))
         {
             if (main.Global.configCollectiveDoorLimit >= 0)
             {
@@ -255,7 +228,7 @@ public final class blockPlaceCheck implements Listener
                 }
                 else if (environment == World.Environment.THE_END)
                 {
-                    main.Global.minY = world.getMinHeight();
+                    main.Global.minY = 0;
                     main.Global.maxY = world.getMaxHeight();
                 }
 
@@ -269,37 +242,58 @@ public final class blockPlaceCheck implements Listener
                         for (int zLevel = 0; zLevel < 16; zLevel++)
                         {
                             Block b1 = chunk.getBlock(xLevel, yLevel, zLevel);
-                            BlockData data = b1.getBlockData();
-                            if (data instanceof Door d)
+                            Material material1 = b1.getType();
+
+                            if (material.name().endsWith("_DOOR"))
                             {
-                                if (d.getHalf() == Door.Half.TOP) continue;
+                                // Skip the top half of the door.
+                                if ((b1.getData() & 0x8) != 0) continue;
+
                                 doorCount++;
+
                                 if (doorCount > main.Global.configCollectiveDoorLimit)
                                 {
                                     if (main.Global.configToggleAlertBlockLimit) alertDOORLimitReached(x, y, z, playerName, world);
 
-                                    if (player.getGameMode() != GameMode.CREATIVE)b1.breakNaturally();
+                                    if (player.hasPermission("chunkShield.blockBypass"))
+                                        return;
+
+                                    if (player.getGameMode() != GameMode.CREATIVE) b1.breakNaturally();
                                     else
                                     {
                                         b1.setType(Material.AIR, false);
-                                        // 1.0.10 Fix - Top Half of doors would remain when placed/limited in Creative.
-                                        Block b2 = world.getBlockAt(b1.getX(), b1.getY()+1, b1.getZ());
+
+                                        // 1.0.10 Fix - Top half of doors would remain
+                                        // when placed/limited in Creative.
+                                        Block b2 = world.getBlockAt(
+                                                b1.getX(),
+                                                b1.getY() + 1,
+                                                b1.getZ()
+                                        );
+
                                         b2.setType(Material.AIR, false);
                                     }
-                                    if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b1.getLocation().toCenterLocation(), 4);
+
+                                    if (main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b1.getLocation().add(0.5, 0.5, 0.5), 4);
+
                                     main.Global.blocksPrevented++;
                                 }
                             }
-                            else if (data instanceof TrapDoor || data instanceof Gate)
+                            else if (material1.name().endsWith("_DOOR") || material1.name().endsWith("_TRAP_DOOR") || material1.name().endsWith("_FENCE_GATE"))
                             {
+
                                 doorCount++;
+
                                 if (doorCount > main.Global.configCollectiveDoorLimit)
                                 {
                                     if (main.Global.configToggleAlertBlockLimit) alertDOORLimitReached(x, y, z, playerName, world);
+                                    if (player.hasPermission("chunkShield.blockBypass")) return;
 
-                                    if (player.getGameMode() != GameMode.CREATIVE)b1.breakNaturally();
+                                    if (player.getGameMode() != GameMode.CREATIVE) b1.breakNaturally();
                                     else b1.setType(Material.AIR, false);
-                                    if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b1.getLocation().toCenterLocation(), 4);
+
+                                    if (main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b1.getLocation().add(0.5, 0.5, 0.5), 4);
+
                                     main.Global.blocksPrevented++;
                                 }
                             }
@@ -312,55 +306,31 @@ public final class blockPlaceCheck implements Listener
 
     private static void alertBLOCKLimitReached(int x, int y, int z, String playerName, Block b, World world)
     {
-        ClickEvent<ClickEvent.Payload.Text> copyCoords = ClickEvent.copyToClipboard(x + " " + y + " " + z);
+        TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
+        TextComponent message = new TextComponent("§c■ " + "§6" + playerName + " §ereached " + "§c" + b.getType() +" §elimit at§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
+        TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
 
-        // English Message Workflow
-        if(main.Global.configLanguageType == 1)
+        for (Player player : Bukkit.getOnlinePlayers())
         {
-            HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(EN.ClickCopy, NamedTextColor.GREEN));
-            Component primaryMessage = EN.blockPlaceCheck_alertBlockLimitReached(playerName, b, copyCoords, hoverCoords);
-            EN.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-        }
-        // Spanish Message Workflow
-        else if(main.Global.configLanguageType == 2)
-        {
-            HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(ES.ClickCopy, NamedTextColor.GREEN));
-            Component primaryMessage = ES.blockPlaceCheck_alertBlockLimitReached(playerName, b, copyCoords, hoverCoords);
-            ES.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-        }
-        // Russian Message Workflow
-        else if(main.Global.configLanguageType == 3)
-        {
-            HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(RU.ClickCopy, NamedTextColor.GREEN));
-            Component primaryMessage = RU.blockPlaceCheck_alertBlockLimitReached(playerName, b, copyCoords, hoverCoords);
-            RU.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
+            if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+            if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
+            if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
+            if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
         }
     }
 
     private static void alertDOORLimitReached(int x, int y, int z, String playerName, World world)
     {
-        ClickEvent<ClickEvent.Payload.Text> copyCoords = ClickEvent.copyToClipboard(x + " " + y + " " + z);
+        TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
+        TextComponent message = new TextComponent("§c■ " + "§6" + playerName + " §ereached " + "§cDoor Limit §eat§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
+        TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
 
-        if(main.Global.configLanguageType == 1)
+        for (Player player : Bukkit.getOnlinePlayers())
         {
-            // English Message Workflow
-            HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(EN.ClickCopy, NamedTextColor.GREEN));
-            Component primaryMessage = EN.blockPlaceCheck_alertDoorLimitReached(playerName, copyCoords, hoverCoords);
-            EN.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-        }
-        else if(main.Global.configLanguageType == 2)
-        {
-            // Spanish Message Workflow
-            HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(ES.ClickCopy, NamedTextColor.GREEN));
-            Component primaryMessage = ES.blockPlaceCheck_alertDoorLimitReached(playerName, copyCoords, hoverCoords);
-            ES.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-        }
-        else if(main.Global.configLanguageType == 3)
-        {
-            // Russian Message Workflow
-            HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(RU.ClickCopy, NamedTextColor.GREEN));
-            Component primaryMessage = RU.blockPlaceCheck_alertDoorLimitReached(playerName, copyCoords, hoverCoords);
-            RU.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
+            if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+            if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
+            if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
+            if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
         }
     }
 }

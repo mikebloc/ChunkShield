@@ -1,7 +1,8 @@
 name: ChunkShield
-version: '1.0.12'
+version: '1.0.11'
 main: me.mikebloc.chunkShield.main
-api-version: '26.2'
+api-version: '26.1.2'
+folia-supported: true
 
 commands:
   reloadconfig:

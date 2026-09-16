@@ -1,10 +1,14 @@
+////////////////////////////////////
+///                              ///
+///            Cutzuu            ///
+///                              ///
+////////////////////////////////////
 
-
-// https://github.com/mikebloc/chunkshield
+// https://github.com/cutzuu/chunkshield
 // Supports: 26.2
-// Version: 1.0.12
+// Version: 1.0.11
 
-// Dated: September 7, 2026
+// Dated: September 1, 2026
 
 
 package me.mikebloc.chunkShield;
@@ -15,16 +19,12 @@ import me.mikebloc.chunkShield.listeners.blockPlaceCheck;
 import me.mikebloc.chunkShield.listeners.entitySummonsCheck;
 import me.mikebloc.chunkShield.listeners.vehicleSummonsCheck;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.data.type.Door;
-import org.bukkit.block.data.type.Gate;
-import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -37,9 +37,10 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -119,10 +120,10 @@ public final class main extends JavaPlugin implements Listener
 
         public static int minY = 0;
         public static int maxY = 0;
-        public static long chunkCount = 0;
-        public static long blocksPrevented = 0;
-        public static long entitiesRemoved = 0;
-        public static long vehiclesPrevented = 0;
+        public static int chunkCount = 0;
+        public static int blocksPrevented = 0;
+        public static int entitiesRemoved = 0;
+        public static int vehiclesPrevented = 0;
 
         public static int Entity_vehicleCount = 0;
 
@@ -203,7 +204,7 @@ public final class main extends JavaPlugin implements Listener
                     int bLimit = section1.getInt(key);
                     blockLimits.put(material, bLimit);
 
-                    if (material.asItemType() instanceof Door || material.asItemType() instanceof TrapDoor || material.asItemType() instanceof Gate)
+                    if (material.name().endsWith("_DOOR") || material.name().endsWith("_TRAP_DOOR") || material.name().endsWith("_FENCE_GATE"))
                     {
                         if (Global.configCollectiveVehicletLimit != -1)
                         {
@@ -227,7 +228,7 @@ public final class main extends JavaPlugin implements Listener
                         getLogger().warning("■");
                         getLogger().warning("!!! --- CONFIG ERROR --- !!!  ");
                     }
-                    if (material == Material.END_PORTAL_FRAME)
+                    if (material == Material.ENDER_PORTAL_FRAME)
                     {
                         getLogger().warning("!!! --- CONFIG ERROR --- !!!  ");
                         getLogger().warning("■");
@@ -395,7 +396,7 @@ public final class main extends JavaPlugin implements Listener
             EntityType type = entity.getType();
             if (!Global.theEntityLimits.containsKey(type)) continue;
 
-            boolean isNamed = entity.customName() != null;
+            boolean isNamed = entity.getCustomName() != null;
             (isNamed ? namedMap : unnamedMap)
                     .computeIfAbsent(type, k -> new ArrayList<>())
                     .add(entity);
@@ -418,6 +419,7 @@ public final class main extends JavaPlugin implements Listener
             if (list.size() > limit)
             {
                 int toRemove = list.size() - limit;
+                Collections.shuffle(list); // optional fairness
                 for (chunkLoadRemovedUnNamedCount = 0; chunkLoadRemovedUnNamedCount < toRemove; chunkLoadRemovedUnNamedCount++)
                 {
                     list.get(chunkLoadRemovedUnNamedCount).remove();
@@ -429,28 +431,16 @@ public final class main extends JavaPlugin implements Listener
                     {
                         if (type != EntityType.FALLING_BLOCK)
                         {
-                            ClickEvent<ClickEvent.Payload.Text> copyCoords = ClickEvent.copyToClipboard(x + " " + y + " " + z);
-                            // TRANSLATE: Removed x10 ZOMBIE_VILLAGER.
-                            // English Message Workflow
-                            if(main.Global.configLanguageType == 1)
+                            TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
+                            TextComponent message = new TextComponent("§c■ §eRemoved §ax" + chunkLoadRemovedUnNamedCount + " §6" + type + " §eat§7: §a[" + x + ", " + y + ", " + z + "§a] §c■");
+                            TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+
+                            for (Player player : Bukkit.getOnlinePlayers())
                             {
-                                HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(EN.ClickCopy, NamedTextColor.GREEN));
-                                Component primaryMessage = EN.entitySummonsCheck_EntityAlert_UnNamed(type, chunkLoadRemovedUnNamedCount, copyCoords, hoverCoords);
-                                EN.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                            }
-                            // Spanish Message Workflow
-                            else if(main.Global.configLanguageType == 2)
-                            {
-                                HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(ES.ClickCopy, NamedTextColor.GREEN));
-                                Component primaryMessage = ES.entitySummonsCheck_EntityAlert_UnNamed(type, chunkLoadRemovedUnNamedCount, copyCoords, hoverCoords);
-                                ES.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                            }
-                            // Russian Message Workflow
-                            else if(main.Global.configLanguageType == 3)
-                            {
-                                HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(RU.ClickCopy, NamedTextColor.GREEN));
-                                Component primaryMessage = RU.entitySummonsCheck_EntityAlert_UnNamed(type, chunkLoadRemovedUnNamedCount, copyCoords, hoverCoords);
-                                RU.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
+                                if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+                                if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
+                                if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
+                                if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
                             }
                         }
                     }
@@ -469,6 +459,7 @@ public final class main extends JavaPlugin implements Listener
             if (list.size() > cap)
             {
                 int toRemove = list.size() - cap;
+                Collections.shuffle(list);
                 for (chunkLoadRemovedNamedCount = 0; chunkLoadRemovedNamedCount < toRemove; chunkLoadRemovedNamedCount++)
                 {
                     list.get(chunkLoadRemovedNamedCount).remove();
@@ -478,28 +469,16 @@ public final class main extends JavaPlugin implements Listener
                 {
                     if (Global.configToggleAlertEntityLimit)
                     {
-                        ClickEvent<ClickEvent.Payload.Text> copyCoords = ClickEvent.copyToClipboard(x + " " + y + " " + z);
-                        // TRANSLATE: Removed x10 Named ZOMBIE_VILLAGER.
-                        // English Message Workflow
-                        if(main.Global.configLanguageType == 1)
+                        TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
+                        TextComponent message = new TextComponent("§c■ §eRemoved §ax" + chunkLoadRemovedNamedCount + " §6Named " + type + " §eat§7: §a[" + x + ", " + y + ", " + z + "§a] §c■");
+                        TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+
+                        for (Player player : Bukkit.getOnlinePlayers())
                         {
-                            HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(EN.ClickCopy, NamedTextColor.GREEN));
-                            Component primaryMessage = EN.entitySummonsCheck_EntityAlert_Named(type, chunkLoadRemovedNamedCount, copyCoords, hoverCoords);
-                            EN.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                        }
-                        // Spanish Message Workflow
-                        else if(main.Global.configLanguageType == 2)
-                        {
-                            HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(ES.ClickCopy, NamedTextColor.GREEN));
-                            Component primaryMessage = ES.entitySummonsCheck_EntityAlert_Named(type, chunkLoadRemovedNamedCount, copyCoords, hoverCoords);
-                            ES.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                        }
-                        // Russian Message Workflow
-                        else if(main.Global.configLanguageType == 3)
-                        {
-                            HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(RU.ClickCopy, NamedTextColor.GREEN));
-                            Component primaryMessage = RU.entitySummonsCheck_EntityAlert_Named(type, chunkLoadRemovedNamedCount, copyCoords, hoverCoords);
-                            RU.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
+                            if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+                            if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
+                            if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
+                            if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
                         }
                     }
                 }
@@ -516,28 +495,16 @@ public final class main extends JavaPlugin implements Listener
         {
             if (length > Global.configMinEntityWarning && Global.configToggleAlertChunkWarning)
             {
-                ClickEvent<ClickEvent.Payload.Text> copyCoords = ClickEvent.copyToClipboard(x + " " + y + " " + z);
-                // TRANSLATE: CHUNK WARNING: Found x10 entities.
-                // English Message Workflow
-                if(main.Global.configLanguageType == 1)
+                TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
+                TextComponent message = new TextComponent("§c■ " + "§cCHUNK WARNING§7: §eFound §ax" + length +" §centities near§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
+                TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+
+                for (Player player : Bukkit.getOnlinePlayers())
                 {
-                    HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(EN.ClickCopy, NamedTextColor.GREEN));
-                    Component primaryMessage = EN.entitySummonsCheck_EntityAlert_NotRemoved(length, copyCoords, hoverCoords);
-                    EN.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                }
-                // Spanish Message Workflow
-                else if(main.Global.configLanguageType == 2)
-                {
-                    HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(ES.ClickCopy, NamedTextColor.GREEN));
-                    Component primaryMessage = ES.entitySummonsCheck_EntityAlert_NotRemoved(length, copyCoords, hoverCoords);
-                    ES.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                }
-                // Russian Message Workflow
-                else if(main.Global.configLanguageType == 3)
-                {
-                    HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(RU.ClickCopy, NamedTextColor.GREEN));
-                    Component primaryMessage = RU.entitySummonsCheck_EntityAlert_NotRemoved(length, copyCoords, hoverCoords);
-                    RU.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
+                    if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+                    if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
+                    if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
+                    if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
                 }
             }
         }
@@ -545,28 +512,16 @@ public final class main extends JavaPlugin implements Listener
         {
             if (Global.configToggleAlertChunkScanned)
             {
-                ClickEvent<ClickEvent.Payload.Text> copyCoords = ClickEvent.copyToClipboard(x + " " + y + " " + z);
-                // TRANSLATE: A Loaded Chunk met 6 conditions & removed x10 entities.
-                // English Message Workflow
-                if(main.Global.configLanguageType == 1)
+                TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
+                TextComponent message = new TextComponent("§c■ " + "§cA ChunkScan met §66 conditions §cand removed §ax" + totality +" §centities at§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
+                TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+
+                for (Player player : Bukkit.getOnlinePlayers())
                 {
-                    HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(EN.ClickCopy, NamedTextColor.GREEN));
-                    Component primaryMessage = EN.main_AlertChunkScanRemovalSuccess(totality, copyCoords, hoverCoords);
-                    EN.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                }
-                // Spanish Message Workflow
-                else if(main.Global.configLanguageType == 2)
-                {
-                    HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(ES.ClickCopy, NamedTextColor.GREEN));
-                    Component primaryMessage = ES.main_AlertChunkScanRemovalSuccess(totality, copyCoords, hoverCoords);
-                    ES.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                }
-                // Russian Message Workflow
-                else if(main.Global.configLanguageType == 3)
-                {
-                    HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(RU.ClickCopy, NamedTextColor.GREEN));
-                    Component primaryMessage = RU.main_AlertChunkScanRemovalSuccess(totality, copyCoords, hoverCoords);
-                    RU.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
+                    if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+                    if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
+                    if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
+                    if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
                 }
             }
         }
@@ -574,7 +529,7 @@ public final class main extends JavaPlugin implements Listener
 
     ////////////////////////////////////////////////////////////////////////////
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args)
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
         if (args.length == 0 || args[0].equalsIgnoreCase("help"))
         {

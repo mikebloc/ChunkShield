@@ -122,7 +122,6 @@ entity-limits:
   ############ Items ############
   ARROW: 10
   ARMOR_STAND: 16
-  CUSHION: 16
   EGG: 10
   EXPERIENCE_ORB: 35
   FALLING_BLOCK: 10
