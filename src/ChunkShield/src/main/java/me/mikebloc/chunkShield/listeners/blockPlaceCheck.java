@@ -145,7 +145,11 @@ public final class blockPlaceCheck implements Listener
             // Patch to make sure we don't destroy natural Bedrock.
             if (environment == World.Environment.NORMAL)
             {
-                main.Global.minY = -59;
+                int height;
+                if (world.getMinHeight() < -5) height = -59;
+                else height = 5;
+
+                main.Global.minY = height;
                 main.Global.maxY = world.getMaxHeight();
             }
             else if (environment == World.Environment.NETHER)
