@@ -120,10 +120,10 @@ public final class main extends JavaPlugin implements Listener
 
         public static int minY = 0;
         public static int maxY = 0;
-        public static int chunkCount = 0;
-        public static int blocksPrevented = 0;
-        public static int entitiesRemoved = 0;
-        public static int vehiclesPrevented = 0;
+        public static long chunkCount = 0;
+        public static long blocksPrevented = 0;
+        public static long entitiesRemoved = 0;
+        public static long vehiclesPrevented = 0;
 
         public static int Entity_vehicleCount = 0;
 
@@ -419,7 +419,6 @@ public final class main extends JavaPlugin implements Listener
             if (list.size() > limit)
             {
                 int toRemove = list.size() - limit;
-                Collections.shuffle(list); // optional fairness
                 for (chunkLoadRemovedUnNamedCount = 0; chunkLoadRemovedUnNamedCount < toRemove; chunkLoadRemovedUnNamedCount++)
                 {
                     list.get(chunkLoadRemovedUnNamedCount).remove();
@@ -464,7 +463,6 @@ public final class main extends JavaPlugin implements Listener
             if (list.size() > cap)
             {
                 int toRemove = list.size() - cap;
-                Collections.shuffle(list);
                 for (chunkLoadRemovedNamedCount = 0; chunkLoadRemovedNamedCount < toRemove; chunkLoadRemovedNamedCount++)
                 {
                     list.get(chunkLoadRemovedNamedCount).remove();
