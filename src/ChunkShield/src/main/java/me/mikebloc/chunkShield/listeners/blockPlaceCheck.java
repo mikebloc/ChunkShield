@@ -191,6 +191,7 @@ public final class blockPlaceCheck implements Listener
                         Block b = matches.get(i);
                         if (placedType.isItem())
                         {
+
                             if (main.Global.configToggleAlertBlockLimit) alertBLOCKLimitReached(x, y, z, playerName, b, world);
 
                             if (player.hasPermission("chunkShield.blockBypass")) return;
