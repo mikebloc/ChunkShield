@@ -158,7 +158,7 @@ public final class blockPlaceCheck implements Listener
             }
             else if (environment == World.Environment.THE_END)
             {
-                main.Global.minY = world.getMinHeight;
+                main.Global.minY = world.getMinHeight();
                 main.Global.maxY = 128;
             }
 
@@ -240,11 +240,16 @@ public final class blockPlaceCheck implements Listener
 
                 if (environment == World.Environment.NORMAL)
                 {
-                    main.Global.minY = -59;
+                    int height1;
+                    if (world.getMinHeight() < -5) height = -59;
+                    else height = 5;
+
+                    main.Global.minY = height1;
                     main.Global.maxY = world.getMaxHeight();
                 }
                 else if (environment == World.Environment.NETHER)
                 {
+                    //Slightly lower to prevent doors and gates.
                     main.Global.minY = 2;
                     main.Global.maxY = 125;
                 }
