@@ -1,7 +1,7 @@
 # 1.16.5 BRANCH
 ⚠️ If you are looking for the latest MC version, please to return to the main branch. ⚠️
 
-### 1.16 API supports up to 1.21.x (Prob 26.x too but have not tested.)
+### 1.16 API supports 1.16 to 26.3
 
 ## Support
 Drop a ⭐ to support and stay up to date!
