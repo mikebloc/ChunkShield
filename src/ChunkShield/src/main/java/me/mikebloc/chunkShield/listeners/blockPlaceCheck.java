@@ -195,12 +195,8 @@ public final class blockPlaceCheck implements Listener
                             // Such as STRING being transformed to TRIPWIRE
                             if (Global.nonItemBlocks.contains(b.getType()) && main.Global.theBlockLimits.containsKey(b.getType()))
                             {
-                                if (player.getGameMode() == GameMode.CREATIVE) b.setType(Material.AIR, false);
-                                else
-                                {
-                                    if (b.getType() == block.getType()) e.setCancelled(true);
-                                    else b.breakNaturally();
-                                }
+                                if (player.getGameMode() != GameMode.CREATIVE)b.breakNaturally();
+                                else b.setType(Material.AIR, false);
                                 if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b.getLocation().toCenterLocation(), 4);
                             }
                             else b.setType(Material.STONE, false); // no physics to avoid cascades
