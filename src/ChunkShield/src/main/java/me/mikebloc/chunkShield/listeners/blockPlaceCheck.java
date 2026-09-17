@@ -86,6 +86,7 @@ public final class blockPlaceCheck implements Listener
     //Why the fix? If you interact with a portal, that can also trigger a removal if limited bc the frame block is updated.
     private static void againstEndPortalCheck(BlockPlaceEvent e, Player player, ItemStack secondHand, PlayerInventory inventory)
     {
+        if (player.hasPermission("chunkShield.blockBypass")) return;
         if (e.getBlockAgainst().getType() == Material.ENDER_PORTAL_FRAME)
         {
             // Main Hand Check
@@ -94,7 +95,6 @@ public final class blockPlaceCheck implements Listener
                 // Check1
                 if (secondHand.getType() == Material.ENDER_PORTAL_FRAME)
                 {
-                    if (player.hasPermission("chunkShield.blockBypass")) return;
                     e.setCancelled(true);
                     main.Global.blocksPrevented++;
                     inventory.setItemInOffHand(null);
@@ -107,7 +107,6 @@ public final class blockPlaceCheck implements Listener
                 // Check1
                 if (player.getInventory().getItemInMainHand().getType() == Material.ENDER_PORTAL_FRAME)
                 {
-                    if (player.hasPermission("chunkShield.blockBypass")) return;
                     e.setCancelled(true);
                     main.Global.blocksPrevented++;
                     inventory.remove(Material.ENDER_PORTAL_FRAME);
@@ -116,7 +115,6 @@ public final class blockPlaceCheck implements Listener
         }
         else
         {
-            if (player.hasPermission("chunkShield.blockBypass")) return;
             e.setCancelled(true);
             main.Global.blocksPrevented++;
             inventory.remove(Material.ENDER_PORTAL_FRAME);
@@ -126,6 +124,7 @@ public final class blockPlaceCheck implements Listener
     /////////////////////////////////////////////////////////////////////////////
     private static void blockChunkCheck(BlockPlaceEvent e, Chunk chunk, Material placedType, int x, int y, int z, String playerName, Material material, Block block, Player player)
     {
+        if (player.hasPermission("chunkShield.blockBypass")) return;
         // 1.0.5 Fix. If the list contains the block placed then check, otherwise don't.
         if (main.Global.theBlockLimits.containsKey(material))
         {
@@ -179,7 +178,6 @@ public final class blockPlaceCheck implements Listener
                         {
                             if (main.Global.configToggleAlertBlockLimit) alertBLOCKLimitReached(x, y, z, playerName, b, world);
 
-                            if (player.hasPermission("chunkShield.blockBypass")) return;
                             if (player.getGameMode() != GameMode.CREATIVE)b.breakNaturally();
                             else b.setType(Material.AIR, false);
                             if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b.getLocation().toCenterLocation(), 4);
@@ -188,7 +186,6 @@ public final class blockPlaceCheck implements Listener
                         else
                         {
                             if (main.Global.configToggleAlertBlockLimit) alertBLOCKLimitReached(x, y, z, playerName, b, world);
-                            if (player.hasPermission("chunkShield.blockBypass")) return;
 
                             // 1.0.7 Fix - Material.REDSTONE_WIRE is not considered TRUE in Material.isItem().
                             // This fix has been updated to handle any non-item materials from an added list above.
@@ -199,14 +196,26 @@ public final class blockPlaceCheck implements Listener
                                 else b.setType(Material.AIR, false);
                                 if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b.getLocation().toCenterLocation(), 4);
                             }
-                            else b.setType(Material.STONE, false); // no physics to avoid cascades
+                            else
+                            {
+                                b.setType(Material.STONE, false); // no physics to avoid cascades
+
+                                player.getServer().getLogger().warning("!!! --- NON-ITEM BLOCK --- !!!  ");
+                                player.getServer().getLogger().warning("■");
+                                player.getServer().getLogger().warning(b.getType() + " just turned into Stone.");
+                                player.getServer().getLogger().warning("Location: " + world.getName() + " [" + x + ", " + y + ", " + z + "]");
+                                player.getServer().getLogger().warning("Report this message to developer to be fixed.");
+                                player.getServer().getLogger().warning("ERROR: " + b.getType() + " is a non-item block.");
+                                player.getServer().getLogger().warning("■");
+                                player.getServer().getLogger().warning("!!! --- NON-ITEM BLOCK --- !!!  ");
+                            }
                         }
                         main.Global.blocksPrevented++;
                     }
                 }
             }
         }
-        // ===== 2) BLOCKS: collective DOOR/TRAPDOOR cap =====
+        // Collective Check (Doors | Trapdoors | Gates)
         else if (material.name().endsWith("_DOOR") || material.name().endsWith("DOOR") || material.name().endsWith("_GATE"))
         {
             if (main.Global.configCollectiveDoorLimit >= 0)
