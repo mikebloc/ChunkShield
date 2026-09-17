@@ -195,9 +195,12 @@ public final class blockPlaceCheck implements Listener
                             else
                             {
                                 if (b.getType() == block.getType()) e.setCancelled(true);
-                                else b.breakNaturally();
                             }
-                            if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b.getLocation().toCenterLocation(), 4);
+                            else 
+                            {
+                                b.breakNaturally();
+                                if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b.getLocation().toCenterLocation(), 4);
+                            }
                         }
                         else
                         {
@@ -212,9 +215,12 @@ public final class blockPlaceCheck implements Listener
                                 else
                                 {
                                     if (b.getType() == block.getType()) e.setCancelled(true);
-                                    else b.breakNaturally();
+                                    else 
+                                    {
+                                        b.breakNaturally();
+                                        if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b.getLocation().toCenterLocation(), 4);
+                                    }
                                 }
-                                if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b.getLocation().toCenterLocation(), 4);
                             }
                             else
                             {
