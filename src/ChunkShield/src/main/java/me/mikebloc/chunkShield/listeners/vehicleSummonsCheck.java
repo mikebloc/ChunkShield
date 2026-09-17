@@ -68,14 +68,14 @@ public final class vehicleSummonsCheck implements Listener
         // ---- Category totals: BOATS & MINE CARTS
         if (main.Global.configCollectiveVehicletLimit > 0)
         {
-            int total = 1;
+            int total = 0;
             for (Entity entity : vehicleGlobal.theVehicle.getNearbyEntities(main.Global.configRadiusLimit, main.Global.configRadiusLimit, main.Global.configRadiusLimit))
             {
                 if (entity instanceof Boat || entity instanceof Minecart)
                 {
                     total++;
-                    int toRemove = total - main.Global.configCollectiveVehicletLimit;
-                    if (toRemove > 0)
+                    int toRemove = main.Global.configCollectiveVehicletLimit - total;
+                    if (toRemove < 1)
                     {
                         entity.remove();
                         main.Global.Entity_vehicleCount++;
