@@ -158,7 +158,7 @@ public final class blockPlaceCheck implements Listener
             }
             else if (environment == World.Environment.THE_END)
             {
-                main.Global.minY = 0;
+                main.Global.minY = world.getMinHeight;
                 main.Global.maxY = 128;
             }
 
