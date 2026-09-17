@@ -1,9 +1,6 @@
 package me.mikebloc.chunkShield.listeners;
 
 import me.mikebloc.chunkShield.main;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -14,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.material.Door;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,9 +61,9 @@ public final class blockPlaceCheck implements Listener
             {
                 if (main.Global.configToggleBlockCheck_50)
                 {
-                    if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
+                    if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
                 }
-                else blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
+                else blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
             }
 
         }
@@ -73,9 +71,9 @@ public final class blockPlaceCheck implements Listener
         {
             if (main.Global.configToggleBlockCheck_50)
             {
-                if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
+                if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
             }
-            else blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
+            else blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
         }
     }
 
@@ -126,7 +124,7 @@ public final class blockPlaceCheck implements Listener
         }
     }
     /////////////////////////////////////////////////////////////////////////////
-    private static void blockChunkCheck(Chunk chunk, Material placedType, int x, int y, int z, String playerName, Material material, Block block, Player player)
+    private static void blockChunkCheck(BlockPlaceEvent e, Chunk chunk, Material placedType, int x, int y, int z, String playerName, Material material, Block block, Player player)
     {
         // 1.0.5 Fix. If the list contains the block placed then check, otherwise don't.
         if (main.Global.theBlockLimits.containsKey(material))
@@ -137,7 +135,7 @@ public final class blockPlaceCheck implements Listener
             // Patch to make sure we don't destroy natural Bedrock.
             if (environment == World.Environment.NORMAL)
             {
-                main.Global.minY = -59;
+                main.Global.minY = 5;
                 main.Global.maxY = world.getMaxHeight();
             }
             else if (environment == World.Environment.NETHER)
@@ -197,8 +195,12 @@ public final class blockPlaceCheck implements Listener
                             // Such as STRING being transformed to TRIPWIRE
                             if (Global.nonItemBlocks.contains(b.getType()) && main.Global.theBlockLimits.containsKey(b.getType()))
                             {
-                                if (player.getGameMode() == GameMode.CREATIVE) b.setType(Material.AIR);
-                                else b.breakNaturally();
+                                if (player.getGameMode() == GameMode.CREATIVE) b.setType(Material.AIR, false);
+                                else
+                                {
+                                    if (b.getType() == block.getType()) e.setCancelled(true);
+                                    else b.breakNaturally();
+                                }
                                 if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b.getLocation().toCenterLocation(), 4);
                             }
                             else b.setType(Material.STONE, false); // no physics to avoid cascades
@@ -209,7 +211,7 @@ public final class blockPlaceCheck implements Listener
             }
         }
         // ===== 2) BLOCKS: collective DOOR/TRAPDOOR cap =====
-        else if (material.name().endsWith("_DOOR") || material.name().endsWith("_TRAP_DOOR") || material.name().endsWith("_FENCE_GATE"))
+        else if (material.name().endsWith("_DOOR") || material.name().endsWith("DOOR") || material.name().endsWith("_GATE"))
         {
             if (main.Global.configCollectiveDoorLimit >= 0)
             {
@@ -242,58 +244,29 @@ public final class blockPlaceCheck implements Listener
                         for (int zLevel = 0; zLevel < 16; zLevel++)
                         {
                             Block b1 = chunk.getBlock(xLevel, yLevel, zLevel);
-                            Material material1 = b1.getType();
-
-                            if (material.name().endsWith("_DOOR"))
+                            if (b1.getType().name().endsWith("_DOOR"))
                             {
-                                // Skip the top half of the door.
-                                if ((b1.getData() & 0x8) != 0) continue;
-
                                 doorCount++;
-
                                 if (doorCount > main.Global.configCollectiveDoorLimit)
                                 {
                                     if (main.Global.configToggleAlertBlockLimit) alertDOORLimitReached(x, y, z, playerName, world);
 
-                                    if (player.hasPermission("chunkShield.blockBypass"))
-                                        return;
-
-                                    if (player.getGameMode() != GameMode.CREATIVE) b1.breakNaturally();
-                                    else
-                                    {
-                                        b1.setType(Material.AIR, false);
-
-                                        // 1.0.10 Fix - Top half of doors would remain
-                                        // when placed/limited in Creative.
-                                        Block b2 = world.getBlockAt(
-                                                b1.getX(),
-                                                b1.getY() + 1,
-                                                b1.getZ()
-                                        );
-
-                                        b2.setType(Material.AIR, false);
-                                    }
-
-                                    if (main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b1.getLocation().add(0.5, 0.5, 0.5), 4);
-
+                                    //removed 1.0.10 fix in this port. Discerning halves of doors is not possible.
+                                    b1.breakNaturally();
+                                    if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b1.getLocation().toCenterLocation(), 4);
                                     main.Global.blocksPrevented++;
                                 }
                             }
-                            else if (material1.name().endsWith("_DOOR") || material1.name().endsWith("_TRAP_DOOR") || material1.name().endsWith("_FENCE_GATE"))
+                            else if (b1.getType().name().endsWith("DOOR") || b1.getType().name().endsWith("_GATE"))
                             {
-
                                 doorCount++;
-
                                 if (doorCount > main.Global.configCollectiveDoorLimit)
                                 {
                                     if (main.Global.configToggleAlertBlockLimit) alertDOORLimitReached(x, y, z, playerName, world);
-                                    if (player.hasPermission("chunkShield.blockBypass")) return;
 
-                                    if (player.getGameMode() != GameMode.CREATIVE) b1.breakNaturally();
+                                    if (player.getGameMode() != GameMode.CREATIVE)b1.breakNaturally();
                                     else b1.setType(Material.AIR, false);
-
-                                    if (main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b1.getLocation().add(0.5, 0.5, 0.5), 4);
-
+                                    if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b1.getLocation().toCenterLocation(), 4);
                                     main.Global.blocksPrevented++;
                                 }
                             }
@@ -310,12 +283,17 @@ public final class blockPlaceCheck implements Listener
         TextComponent message = new TextComponent("§c■ " + "§6" + playerName + " §ereached " + "§c" + b.getType() +" §elimit at§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
         TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
 
-        for (Player player : Bukkit.getOnlinePlayers())
+        for (Player player : Bukkit.getServer().getOnlinePlayers())
         {
             if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
             if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
             if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
             if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+
+            Bukkit.getServer().getLogger().warning(STYLE.getText());
+            Bukkit.getServer().getLogger().warning(message.getText());
+            Bukkit.getServer().getLogger().warning(sub.getText());
+            Bukkit.getServer().getLogger().warning(STYLE.getText());
         }
     }
 
@@ -325,12 +303,17 @@ public final class blockPlaceCheck implements Listener
         TextComponent message = new TextComponent("§c■ " + "§6" + playerName + " §ereached " + "§cDoor Limit §eat§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
         TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
 
-        for (Player player : Bukkit.getOnlinePlayers())
+        for (Player player : Bukkit.getServer().getOnlinePlayers())
         {
             if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
             if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
             if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
             if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+
+            Bukkit.getServer().getLogger().warning(STYLE.getText());
+            Bukkit.getServer().getLogger().warning(message.getText());
+            Bukkit.getServer().getLogger().warning(sub.getText());
+            Bukkit.getServer().getLogger().warning(STYLE.getText());
         }
     }
 }

@@ -167,29 +167,39 @@ public final class entitySummonsCheck implements Listener
             if (Named)
             {
                 TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
-                TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax"+ entitySummonNamedCount +" §6Named " + type + " §eat§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
+                TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax"+ entitySummonNamedCount +" §aNamed " + type + " §eat§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
                 TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
 
-                for (Player player : Bukkit.getOnlinePlayers())
+                for (Player player : Bukkit.getServer().getOnlinePlayers())
                 {
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+
+                    Bukkit.getServer().getLogger().warning(STYLE.getText());
+                    Bukkit.getServer().getLogger().warning(message.getText());
+                    Bukkit.getServer().getLogger().warning(sub.getText());
+                    Bukkit.getServer().getLogger().warning(STYLE.getText());
                 }
             }
             else
             {
                 TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
-                TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax"+ entitySummonNamedCount + type + " §eat§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
+                TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax"+ entitySummonUnNamedCount + " " + type + " §eat§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
                 TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
 
-                for (Player player : Bukkit.getOnlinePlayers())
+                for (Player player : Bukkit.getServer().getOnlinePlayers())
                 {
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+
+                    Bukkit.getServer().getLogger().warning(STYLE.getText());
+                    Bukkit.getServer().getLogger().warning(message.getText());
+                    Bukkit.getServer().getLogger().warning(sub.getText());
+                    Bukkit.getServer().getLogger().warning(STYLE.getText());
                 }
             }
         }
@@ -199,12 +209,17 @@ public final class entitySummonsCheck implements Listener
             TextComponent message = new TextComponent("§c■ " + "§cCHUNK WARNING§7: §eFound §ax" + length +" §centities near§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
             TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
 
-            for (Player player : Bukkit.getOnlinePlayers())
+            for (Player player : Bukkit.getServer().getOnlinePlayers())
             {
                 if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
                 if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
                 if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
                 if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+
+                Bukkit.getServer().getLogger().warning(STYLE.getText());
+                Bukkit.getServer().getLogger().warning(message.getText());
+                Bukkit.getServer().getLogger().warning(sub.getText());
+                Bukkit.getServer().getLogger().warning(STYLE.getText());
             }
         }
     }

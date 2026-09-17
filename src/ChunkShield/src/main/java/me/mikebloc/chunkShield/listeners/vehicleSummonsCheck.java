@@ -1,9 +1,6 @@
 package me.mikebloc.chunkShield.listeners;
 
 import me.mikebloc.chunkShield.main;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
@@ -66,14 +63,15 @@ public final class vehicleSummonsCheck implements Listener
         // ---- Category totals: BOATS & MINE CARTS
         if (main.Global.configCollectiveVehicletLimit > 0)
         {
-            int total = 1;
+            int total = 0;
             for (Entity entity : vehicleGlobal.theVehicle.getNearbyEntities(main.Global.configRadiusLimit, main.Global.configRadiusLimit, main.Global.configRadiusLimit))
             {
                 if (entity instanceof Boat || entity instanceof Minecart)
                 {
+                    // This could be simpler but it wont cooperate otherwise.
                     total++;
-                    int toRemove = total - main.Global.configCollectiveVehicletLimit;
-                    if (toRemove > 0)
+                    int toRemove = main.Global.configCollectiveVehicletLimit - total;
+                    if (toRemove < 1)
                     {
                         entity.remove();
                         main.Global.Entity_vehicleCount++;
@@ -84,27 +82,28 @@ public final class vehicleSummonsCheck implements Listener
                 }
             }
 
-            if (main.Global.Entity_vehicleCount != 0)
+            if (main.Global.Entity_vehicleCount > 1)
             {
                 if (main.Global.configToggleAlertVehicleLimit)
                 {
-
-
                     TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
-                    TextComponent message = new TextComponent("§c■ " + "§cVehicle Limit §ewas reached at§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
+                    TextComponent message = new TextComponent("§c■ " + "§6Vehicle Limit §ewas reached at§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
                     TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
 
-                    for (Player player : Bukkit.getOnlinePlayers())
+                    for (Player player : Bukkit.getServer().getOnlinePlayers())
                     {
                         if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
                         if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
                         if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
                         if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+
+                        Bukkit.getServer().getLogger().warning(STYLE.getText());
+                        Bukkit.getServer().getLogger().warning(message.getText());
+                        Bukkit.getServer().getLogger().warning(sub.getText());
+                        Bukkit.getServer().getLogger().warning(STYLE.getText());
                     }
                 }
             }
         }
     }
-
-
 }

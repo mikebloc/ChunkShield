@@ -435,12 +435,17 @@ public final class main extends JavaPlugin implements Listener
                             TextComponent message = new TextComponent("§c■ §eRemoved §ax" + chunkLoadRemovedUnNamedCount + " §6" + type + " §eat§7: §a[" + x + ", " + y + ", " + z + "§a] §c■");
                             TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
 
-                            for (Player player : Bukkit.getOnlinePlayers())
+                            for (Player player : Bukkit.getServer().getOnlinePlayers())
                             {
                                 if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
                                 if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
                                 if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
                                 if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+
+                                Bukkit.getServer().getLogger().warning(STYLE.getText());
+                                Bukkit.getServer().getLogger().warning(message.getText());
+                                Bukkit.getServer().getLogger().warning(sub.getText());
+                                Bukkit.getServer().getLogger().warning(STYLE.getText());
                             }
                         }
                     }
@@ -473,12 +478,17 @@ public final class main extends JavaPlugin implements Listener
                         TextComponent message = new TextComponent("§c■ §eRemoved §ax" + chunkLoadRemovedNamedCount + " §6Named " + type + " §eat§7: §a[" + x + ", " + y + ", " + z + "§a] §c■");
                         TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
 
-                        for (Player player : Bukkit.getOnlinePlayers())
+                        for (Player player : Bukkit.getServer().getOnlinePlayers())
                         {
                             if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
                             if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
                             if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
                             if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+
+                            Bukkit.getServer().getLogger().warning(STYLE.getText());
+                            Bukkit.getServer().getLogger().warning(message.getText());
+                            Bukkit.getServer().getLogger().warning(sub.getText());
+                            Bukkit.getServer().getLogger().warning(STYLE.getText());
                         }
                     }
                 }
@@ -499,12 +509,17 @@ public final class main extends JavaPlugin implements Listener
                 TextComponent message = new TextComponent("§c■ " + "§cCHUNK WARNING§7: §eFound §ax" + length +" §centities near§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
                 TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
 
-                for (Player player : Bukkit.getOnlinePlayers())
+                for (Player player : Bukkit.getServer().getOnlinePlayers())
                 {
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+
+                    Bukkit.getServer().getLogger().warning(STYLE.getText());
+                    Bukkit.getServer().getLogger().warning(message.getText());
+                    Bukkit.getServer().getLogger().warning(sub.getText());
+                    Bukkit.getServer().getLogger().warning(STYLE.getText());
                 }
             }
         }
@@ -516,12 +531,17 @@ public final class main extends JavaPlugin implements Listener
                 TextComponent message = new TextComponent("§c■ " + "§cA ChunkScan met §66 conditions §cand removed §ax" + totality +" §centities at§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
                 TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
 
-                for (Player player : Bukkit.getOnlinePlayers())
+                for (Player player : Bukkit.getServer().getOnlinePlayers())
                 {
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
                     if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+
+                    Bukkit.getServer().getLogger().warning(STYLE.getText());
+                    Bukkit.getServer().getLogger().warning(message.getText());
+                    Bukkit.getServer().getLogger().warning(sub.getText());
+                    Bukkit.getServer().getLogger().warning(STYLE.getText());
                 }
             }
         }
