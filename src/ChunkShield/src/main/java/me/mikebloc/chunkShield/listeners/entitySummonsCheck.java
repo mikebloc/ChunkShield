@@ -1,7 +1,5 @@
 package me.mikebloc.chunkShield.listeners;
 
-import me.mikebloc.chunkShield.languages.ES;
-import me.mikebloc.chunkShield.languages.RU;
 import me.mikebloc.chunkShield.main;
 import me.mikebloc.chunkShield.languages.EN;
 import net.kyori.adventure.text.Component;
@@ -180,20 +178,6 @@ public final class entitySummonsCheck implements Listener
                     Component primaryMessage = EN.entitySummonsCheck_EntityAlert_Named(type, entitySummonNamedCount, copyCoords, hoverCoords);
                     EN.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
                 }
-                // Spanish Message Workflow
-                else if(main.Global.configLanguageType == 2)
-                {
-                    HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(ES.ClickCopy, NamedTextColor.GREEN));
-                    Component primaryMessage = ES.entitySummonsCheck_EntityAlert_Named(type, entitySummonNamedCount, copyCoords, hoverCoords);
-                    ES.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                }
-                // Russian Message Workflow
-                else if(main.Global.configLanguageType == 3)
-                {
-                    HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(RU.ClickCopy, NamedTextColor.GREEN));
-                    Component primaryMessage = RU.entitySummonsCheck_EntityAlert_Named(type, entitySummonNamedCount, copyCoords, hoverCoords);
-                    RU.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                }
             }
             else
             {
@@ -203,20 +187,6 @@ public final class entitySummonsCheck implements Listener
                     HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(EN.ClickCopy, NamedTextColor.GREEN));
                     Component primaryMessage = EN.entitySummonsCheck_EntityAlert_UnNamed(type, entitySummonUnNamedCount, copyCoords, hoverCoords);
                     EN.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                }
-                // Spanish Message Workflow
-                else if(main.Global.configLanguageType == 2)
-                {
-                    HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(ES.ClickCopy, NamedTextColor.GREEN));
-                    Component primaryMessage = ES.entitySummonsCheck_EntityAlert_UnNamed(type, entitySummonUnNamedCount, copyCoords, hoverCoords);
-                    ES.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                }
-                // Russian Message Workflow
-                else if(main.Global.configLanguageType == 3)
-                {
-                    HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(RU.ClickCopy, NamedTextColor.GREEN));
-                    Component primaryMessage = RU.entitySummonsCheck_EntityAlert_UnNamed(type, entitySummonUnNamedCount, copyCoords, hoverCoords);
-                    RU.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
                 }
             }
         }
@@ -228,20 +198,6 @@ public final class entitySummonsCheck implements Listener
                 HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(EN.ClickCopy, NamedTextColor.GREEN));
                 Component primaryMessage = EN.entitySummonsCheck_EntityAlert_NotRemoved(length, copyCoords, hoverCoords);
                 EN.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-            }
-            // Spanish Message Workflow
-            else if(main.Global.configLanguageType == 2)
-            {
-                HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(ES.ClickCopy, NamedTextColor.GREEN));
-                Component primaryMessage = ES.entitySummonsCheck_EntityAlert_NotRemoved(length, copyCoords, hoverCoords);
-                ES.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-            }
-            // Russian Message Workflow
-            else if(main.Global.configLanguageType == 3)
-            {
-                HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(RU.ClickCopy, NamedTextColor.GREEN));
-                Component primaryMessage = RU.entitySummonsCheck_EntityAlert_NotRemoved(length, copyCoords, hoverCoords);
-                RU.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
             }
         }
     }
