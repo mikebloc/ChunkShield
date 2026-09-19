@@ -55,9 +55,9 @@ public final class blockPlaceCheck implements Listener
             {
                 if (main.Global.configToggleBlockCheck_50)
                 {
-                    if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
+                    if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(chunk, placedType, x, y, z, playerName, material, player);
                 }
-                else blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
+                else blockChunkCheck(chunk, placedType, x, y, z, playerName, material, player);
             }
 
         }
@@ -65,9 +65,9 @@ public final class blockPlaceCheck implements Listener
         {
             if (main.Global.configToggleBlockCheck_50)
             {
-                if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
+                if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(chunk, placedType, x, y, z, playerName, material, player);
             }
-            else blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
+            else blockChunkCheck(chunk, placedType, x, y, z, playerName, material, player);
         }
     }
 
@@ -115,7 +115,7 @@ public final class blockPlaceCheck implements Listener
         }
     }
     /////////////////////////////////////////////////////////////////////////////
-    private static void blockChunkCheck(BlockPlaceEvent e, Chunk chunk, Material placedType, int x, int y, int z, String playerName, Material material, Block block, Player player)
+    private static void blockChunkCheck(Chunk chunk, Material placedType, int x, int y, int z, String playerName, Material material, Player player)
     {
         if (player.hasPermission("chunkShield.blockBypass")) return;
         // 1.0.5 Fix. If the list contains the block placed then check, otherwise don't.
