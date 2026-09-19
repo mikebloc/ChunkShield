@@ -7,6 +7,9 @@
 # Check how ChunkShield maintains server health.
 # https://github.com/mikebloc/ChunkShield/blob/main/Documentation/Technicalities%20Explained.MD
 
+# Paper 1.12 Block Names are very different from 1.12 MC
+# Refer for names here: https://jd.papermc.io/paper/1.12.2/org/bukkit/Material.html
+
 ###############################
 #        Configuration        #
 ###############################
@@ -81,12 +84,12 @@ block-limits:
   BEDROCK: 0
   CHEST: 200
   TRAPPED_CHEST: 200
-  ENCHANTING_TABLE: 8
+  ENCHANTMENT_TABLE: 8
   HOPPER: 32
-  PISTON: 32
-  STICKY_PISTON: 32
-  REPEATER: 20
-  COMPARATOR: 20
+  PISTON_BASE: 32
+  PISTON_STICKY_BASE: 32
+  DIODE: 20 #This is a Repeater... https://jd.papermc.io/paper/1.12.2/org/bukkit/Material.html
+  REDSTONE_COMPARATOR: 20
   REDSTONE_WIRE: 100
 
 ###############################
@@ -119,7 +122,6 @@ entity-limits:
   PRIMED_TNT: 1
   SHULKER_BULLET: 8
   SNOWBALL: 10
-  TRIDENT: 10
 
   ############ Mobs ############
   COW: 32

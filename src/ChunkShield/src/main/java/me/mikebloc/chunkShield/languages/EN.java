@@ -24,6 +24,8 @@ public class EN
     public static void main_ConsoleInvalidConfigBlock(String key)
     {
         getLogger().warning("Invalid block type in config: " + key);
+        getLogger().warning("1.12 Paper naming conflicts with 1.12 MC.");
+        getLogger().warning("Check here: https://jd.papermc.io/paper/1.12.2/org/bukkit/Material.html");
     }
     // Invalid Action. No Permission.
     public static void main_NoPermission(CommandSender sender)
