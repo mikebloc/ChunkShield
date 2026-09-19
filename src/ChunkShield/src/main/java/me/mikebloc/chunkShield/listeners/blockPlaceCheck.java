@@ -37,7 +37,7 @@ public final class blockPlaceCheck implements Listener
         // Ex: REDSTONE is not REDSTONE_WIRE
         public static List<Material> nonItemBlocks = List.of
                 (
-                        //Material.REDSTONE_WIRE,
+                        Material.REDSTONE_WIRE,
                         Material.TRIPWIRE
                 );
     }
