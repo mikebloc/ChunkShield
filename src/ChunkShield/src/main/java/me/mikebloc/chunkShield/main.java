@@ -1,12 +1,9 @@
 package me.mikebloc.chunkShield;
 import me.mikebloc.chunkShield.languages.EN;
-import me.mikebloc.chunkShield.languages.ES;
-import me.mikebloc.chunkShield.languages.RU;
 import me.mikebloc.chunkShield.listeners.blockPlaceCheck;
 import me.mikebloc.chunkShield.listeners.entitySummonsCheck;
 import me.mikebloc.chunkShield.listeners.vehicleSummonsCheck;
 
-import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -25,7 +22,6 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -75,7 +71,7 @@ public final class main extends JavaPlugin implements Listener
         Global.configToggleAlertVehicleLimit = this.getConfig().getBoolean("VehicleLimits");
 
         Global.configTogglePurgeEffect = this.getConfig().getBoolean("PurgeEffects");
-        Global.configLanguageType = this.getConfig().getInt("lang");
+        Global.configLanguageType = 1;
 
     }
     ////////////////////////////////////////////////////////////////////////////
@@ -154,7 +150,7 @@ public final class main extends JavaPlugin implements Listener
         Global.configToggleAlertVehicleLimit = this.getConfig().getBoolean("VehicleLimits");
 
         Global.configTogglePurgeEffect = this.getConfig().getBoolean("PurgeEffects");
-        Global.configLanguageType = this.getConfig().getInt("lang");
+        Global.configLanguageType = 1;
 
         ConfigurationSection section0 = config.getConfigurationSection("entity-limits");
         if (section0 != null)
@@ -171,8 +167,6 @@ public final class main extends JavaPlugin implements Listener
                 {
                     // TRANSLATE: Invalid entity type in config:
                     if (Global.configLanguageType == 1) EN.main_ConsoleInvalidConfigEntity(key);
-                    else if (Global.configLanguageType == 2) ES.main_ConsoleInvalidConfigEntity(key);
-                    else if (Global.configLanguageType == 3) RU.main_ConsoleInvalidConfigEntity(key);
                 }
             }
             Global.theEntityLimits = entityLimits;
@@ -228,8 +222,6 @@ public final class main extends JavaPlugin implements Listener
                 {
                     // TRANSLATE: Invalid block type in config:
                     if (Global.configLanguageType == 1) EN.main_ConsoleInvalidConfigBlock(key);
-                    else if (Global.configLanguageType == 2) ES.main_ConsoleInvalidConfigBlock(key);
-                    else if (Global.configLanguageType == 3) RU.main_ConsoleInvalidConfigBlock(key);
                 }
             }
             Global.theBlockLimits = blockLimits;
@@ -250,8 +242,6 @@ public final class main extends JavaPlugin implements Listener
                 {
                     // TRANSLATE: Invalid entity type in named-entity-limits:
                     if (Global.configLanguageType == 1) EN.main_ConsoleInvalidConfigNamedEntity(key);
-                    else if (Global.configLanguageType == 2) ES.main_ConsoleInvalidConfigNamedEntity(key);
-                    else if (Global.configLanguageType == 3) RU.main_ConsoleInvalidConfigNamedEntity(key);
                 }
             }
             Global.theNamedEntityLimits = namedEntityLimits;
@@ -549,15 +539,11 @@ public final class main extends JavaPlugin implements Listener
                 loadLimitsFromConfig();
                 // TRANSLATE: §7[§6ChunkShield§7] §aConfig reloaded.
                 if (Global.configLanguageType == 1) EN.main_ConfigReloaded(sender);
-                else if (Global.configLanguageType == 2) ES.main_ConfigReloaded(sender);
-                else if (Global.configLanguageType == 3) RU.main_ConfigReloaded(sender);
             }
             else
             {
                 // TRANSLATE: Invalid Action. No Permission.
                 if (Global.configLanguageType == 1) EN.main_NoPermission(sender);
-                else if (Global.configLanguageType == 2) ES.main_NoPermission(sender);
-                else if (Global.configLanguageType == 3) RU.main_NoPermission(sender);
             }
             return true;
         }
@@ -567,15 +553,11 @@ public final class main extends JavaPlugin implements Listener
             {
                 // TRANSLATE: ChunkShield Stats breakdown.
                 if (Global.configLanguageType == 1) EN.main_Subcommand_Stats(sender);
-                else if (Global.configLanguageType == 2) ES.main_Subcommand_Stats(sender);
-                else if (Global.configLanguageType == 3) RU.main_Subcommand_Stats(sender);
             }
             else
             {
                 // TRANSLATE: Invalid Action. No Permission.
                 if (Global.configLanguageType == 1) EN.main_NoPermission(sender);
-                else if (Global.configLanguageType == 2) ES.main_NoPermission(sender);
-                else if (Global.configLanguageType == 3) RU.main_NoPermission(sender);
             }
             return true;
         }
