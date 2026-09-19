@@ -42,8 +42,6 @@ public final class blockPlaceCheck implements Listener
                 );
     }
 
-
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockPlace(BlockPlaceEvent e)
     {
@@ -54,8 +52,6 @@ public final class blockPlaceCheck implements Listener
         Player player = e.getPlayer();
         PlayerInventory inventory = e.getPlayer().getInventory();
         ItemStack secondHand = inventory.getItemInOffHand();
-
-
 
         int x = e.getBlock().getX();
         int y = e.getBlock().getY();
@@ -88,7 +84,6 @@ public final class blockPlaceCheck implements Listener
     }
 
     /////////////////////////////////////////////////////////////////////////////
-
     //No need for owner to block End Portal Frames
     //This is a fix/feature for if End Portal Frames get blocked.
     //If normally limited, it breaks end portals.

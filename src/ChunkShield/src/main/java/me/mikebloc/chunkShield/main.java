@@ -26,11 +26,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Door;
-import org.bukkit.block.data.type.Gate;
-import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -265,12 +260,10 @@ public final class main extends JavaPlugin implements Listener
     }
 
     ////////////////////////////////////////////////////////////////////////////
-
     // 20% - InventoryOpenEvent
     // 10% - CraftItemEvent
     // 20% - EntityDeathEvent
     // 100% - ChunkLoadEvent
-
     /////////////////////////////////////////////////////////////////////////////
 
     // Cords are forced into INT because the Chunk Cords in messages get long and or ugly.
