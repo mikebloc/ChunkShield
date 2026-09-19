@@ -210,14 +210,14 @@ public final class blockPlaceCheck implements Listener
                             {
                                 b.setType(Material.STONE, false); // no physics to avoid cascades
 
-                                player.getServer().getLogger().warning("!!! --- NON-ITEM BLOCK --- !!!  ");
-                                player.getServer().getLogger().warning("■");
-                                player.getServer().getLogger().warning(b.getType() + " just turned into Stone.");
-                                player.getServer().getLogger().warning("Location: " + world.getName() + " [" + x + ", " + y + ", " + z + "]");
-                                player.getServer().getLogger().warning("Report this message to developer to be fixed.");
-                                player.getServer().getLogger().warning("ERROR: " + b.getType() + " is a non-item block.");
-                                player.getServer().getLogger().warning("■");
-                                player.getServer().getLogger().warning("!!! --- NON-ITEM BLOCK --- !!!  ");
+                                player.getServer().getConsoleSender().sendMessage("§c■ §7- - - - - - - §cERROR§7: §cNON ITEM BLOCK §7- - - - - - - §c■");
+                                player.getServer().getConsoleSender().sendMessage("§c■");
+                                player.getServer().getConsoleSender().sendMessage("§c■ §a" + material.name() + " §ejust turned into Stone.");
+                                player.getServer().getConsoleSender().sendMessage("§c■ §a" + material.name() + " §eis a non-item block.");
+                                player.getServer().getConsoleSender().sendMessage("§c■ §eLocation§7: " + "§6" +world.getName() + " §7[" + "§e" + x + "§7, " + "§e" + y + "§7, " + "§e" + z + "§7]");
+                                player.getServer().getConsoleSender().sendMessage("§c■ §6Report this message to developer to be fixed.");
+                                player.getServer().getConsoleSender().sendMessage("§c■");
+                                player.getServer().getConsoleSender().sendMessage("§c■ §7- - - - - - - §cERROR§7: §cNON ITEM BLOCK §7- - - - - - - §c■");
                             }
                         }
                         main.Global.blocksPrevented++;
