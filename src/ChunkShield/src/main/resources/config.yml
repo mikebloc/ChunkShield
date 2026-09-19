@@ -10,13 +10,6 @@
 ###############################
 #        Configuration        #
 ###############################
-
-# LANGUAGE SUPPORT
-# 1 - English
-# 2 - Spanish
-# 3 - Russian
-lang: 1
-
 # When anything is purged, a small flame poofs.
 # Does not occur during Chunk Loading and stops after 10 instantaneous removals.
 PurgeEffects: true
