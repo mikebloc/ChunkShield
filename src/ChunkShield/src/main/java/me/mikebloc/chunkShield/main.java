@@ -1,7 +1,5 @@
 package me.mikebloc.chunkShield;
 import me.mikebloc.chunkShield.languages.EN;
-import me.mikebloc.chunkShield.languages.ES;
-import me.mikebloc.chunkShield.languages.RU;
 import me.mikebloc.chunkShield.listeners.blockPlaceCheck;
 import me.mikebloc.chunkShield.listeners.entitySummonsCheck;
 import me.mikebloc.chunkShield.listeners.vehicleSummonsCheck;
@@ -77,7 +75,7 @@ public final class main extends JavaPlugin implements Listener
         Global.configToggleAlertVehicleLimit = this.getConfig().getBoolean("VehicleLimits");
 
         Global.configTogglePurgeEffect = this.getConfig().getBoolean("PurgeEffects");
-        Global.configLanguageType = this.getConfig().getInt("lang");
+        Global.configLanguageType = 1;
 
     }
     ////////////////////////////////////////////////////////////////////////////
@@ -173,8 +171,6 @@ public final class main extends JavaPlugin implements Listener
                 {
                     // TRANSLATE: Invalid entity type in config:
                     if (Global.configLanguageType == 1) EN.main_ConsoleInvalidConfigEntity(key);
-                    else if (Global.configLanguageType == 2) ES.main_ConsoleInvalidConfigEntity(key);
-                    else if (Global.configLanguageType == 3) RU.main_ConsoleInvalidConfigEntity(key);
                 }
             }
             Global.theEntityLimits = entityLimits;
@@ -230,8 +226,6 @@ public final class main extends JavaPlugin implements Listener
                 {
                     // TRANSLATE: Invalid block type in config:
                     if (Global.configLanguageType == 1) EN.main_ConsoleInvalidConfigBlock(key);
-                    else if (Global.configLanguageType == 2) ES.main_ConsoleInvalidConfigBlock(key);
-                    else if (Global.configLanguageType == 3) RU.main_ConsoleInvalidConfigBlock(key);
                 }
             }
             Global.theBlockLimits = blockLimits;
@@ -252,8 +246,6 @@ public final class main extends JavaPlugin implements Listener
                 {
                     // TRANSLATE: Invalid entity type in named-entity-limits:
                     if (Global.configLanguageType == 1) EN.main_ConsoleInvalidConfigNamedEntity(key);
-                    else if (Global.configLanguageType == 2) ES.main_ConsoleInvalidConfigNamedEntity(key);
-                    else if (Global.configLanguageType == 3) RU.main_ConsoleInvalidConfigNamedEntity(key);
                 }
             }
             Global.theNamedEntityLimits = namedEntityLimits;
@@ -424,20 +416,6 @@ public final class main extends JavaPlugin implements Listener
                                 Component primaryMessage = EN.entitySummonsCheck_EntityAlert_UnNamed(type, chunkLoadRemovedUnNamedCount, copyCoords, hoverCoords);
                                 EN.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
                             }
-                            // Spanish Message Workflow
-                            else if(main.Global.configLanguageType == 2)
-                            {
-                                HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(ES.ClickCopy, NamedTextColor.GREEN));
-                                Component primaryMessage = ES.entitySummonsCheck_EntityAlert_UnNamed(type, chunkLoadRemovedUnNamedCount, copyCoords, hoverCoords);
-                                ES.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                            }
-                            // Russian Message Workflow
-                            else if(main.Global.configLanguageType == 3)
-                            {
-                                HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(RU.ClickCopy, NamedTextColor.GREEN));
-                                Component primaryMessage = RU.entitySummonsCheck_EntityAlert_UnNamed(type, chunkLoadRemovedUnNamedCount, copyCoords, hoverCoords);
-                                RU.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                            }
                         }
                     }
                 }
@@ -473,20 +451,6 @@ public final class main extends JavaPlugin implements Listener
                             Component primaryMessage = EN.entitySummonsCheck_EntityAlert_Named(type, chunkLoadRemovedNamedCount, copyCoords, hoverCoords);
                             EN.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
                         }
-                        // Spanish Message Workflow
-                        else if(main.Global.configLanguageType == 2)
-                        {
-                            HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(ES.ClickCopy, NamedTextColor.GREEN));
-                            Component primaryMessage = ES.entitySummonsCheck_EntityAlert_Named(type, chunkLoadRemovedNamedCount, copyCoords, hoverCoords);
-                            ES.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                        }
-                        // Russian Message Workflow
-                        else if(main.Global.configLanguageType == 3)
-                        {
-                            HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(RU.ClickCopy, NamedTextColor.GREEN));
-                            Component primaryMessage = RU.entitySummonsCheck_EntityAlert_Named(type, chunkLoadRemovedNamedCount, copyCoords, hoverCoords);
-                            RU.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                        }
                     }
                 }
             }
@@ -511,20 +475,6 @@ public final class main extends JavaPlugin implements Listener
                     Component primaryMessage = EN.entitySummonsCheck_EntityAlert_NotRemoved(length, copyCoords, hoverCoords);
                     EN.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
                 }
-                // Spanish Message Workflow
-                else if(main.Global.configLanguageType == 2)
-                {
-                    HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(ES.ClickCopy, NamedTextColor.GREEN));
-                    Component primaryMessage = ES.entitySummonsCheck_EntityAlert_NotRemoved(length, copyCoords, hoverCoords);
-                    ES.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                }
-                // Russian Message Workflow
-                else if(main.Global.configLanguageType == 3)
-                {
-                    HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(RU.ClickCopy, NamedTextColor.GREEN));
-                    Component primaryMessage = RU.entitySummonsCheck_EntityAlert_NotRemoved(length, copyCoords, hoverCoords);
-                    RU.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                }
             }
         }
         else
@@ -539,20 +489,6 @@ public final class main extends JavaPlugin implements Listener
                     HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(EN.ClickCopy, NamedTextColor.GREEN));
                     Component primaryMessage = EN.main_AlertChunkScanRemovalSuccess(totality, copyCoords, hoverCoords);
                     EN.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                }
-                // Spanish Message Workflow
-                else if(main.Global.configLanguageType == 2)
-                {
-                    HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(ES.ClickCopy, NamedTextColor.GREEN));
-                    Component primaryMessage = ES.main_AlertChunkScanRemovalSuccess(totality, copyCoords, hoverCoords);
-                    ES.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                }
-                // Russian Message Workflow
-                else if(main.Global.configLanguageType == 3)
-                {
-                    HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(RU.ClickCopy, NamedTextColor.GREEN));
-                    Component primaryMessage = RU.main_AlertChunkScanRemovalSuccess(totality, copyCoords, hoverCoords);
-                    RU.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
                 }
             }
         }
@@ -580,15 +516,11 @@ public final class main extends JavaPlugin implements Listener
                 loadLimitsFromConfig();
                 // TRANSLATE: §7[§6ChunkShield§7] §aConfig reloaded.
                 if (Global.configLanguageType == 1) EN.main_ConfigReloaded(sender);
-                else if (Global.configLanguageType == 2) ES.main_ConfigReloaded(sender);
-                else if (Global.configLanguageType == 3) RU.main_ConfigReloaded(sender);
             }
             else
             {
                 // TRANSLATE: Invalid Action. No Permission.
                 if (Global.configLanguageType == 1) EN.main_NoPermission(sender);
-                else if (Global.configLanguageType == 2) ES.main_NoPermission(sender);
-                else if (Global.configLanguageType == 3) RU.main_NoPermission(sender);
             }
             return true;
         }
@@ -598,15 +530,11 @@ public final class main extends JavaPlugin implements Listener
             {
                 // TRANSLATE: ChunkShield Stats breakdown.
                 if (Global.configLanguageType == 1) EN.main_Subcommand_Stats(sender);
-                else if (Global.configLanguageType == 2) ES.main_Subcommand_Stats(sender);
-                else if (Global.configLanguageType == 3) RU.main_Subcommand_Stats(sender);
             }
             else
             {
                 // TRANSLATE: Invalid Action. No Permission.
                 if (Global.configLanguageType == 1) EN.main_NoPermission(sender);
-                else if (Global.configLanguageType == 2) ES.main_NoPermission(sender);
-                else if (Global.configLanguageType == 3) RU.main_NoPermission(sender);
             }
             return true;
         }

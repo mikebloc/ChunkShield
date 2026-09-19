@@ -1,7 +1,5 @@
 package me.mikebloc.chunkShield.listeners;
 
-import me.mikebloc.chunkShield.languages.ES;
-import me.mikebloc.chunkShield.languages.RU;
 import me.mikebloc.chunkShield.main;
 import me.mikebloc.chunkShield.languages.EN;
 import net.kyori.adventure.text.Component;
@@ -91,24 +89,8 @@ public final class vehicleSummonsCheck implements Listener
                         Component primaryMessage = EN.vehicleSummonsCheck_alertVehicleLimit(copyCoords, hoverCoords);
                         EN.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
                     }
-                    // Spanish Message Workflow
-                    else if(main.Global.configLanguageType == 2)
-                    {
-                        HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(ES.ClickCopy, NamedTextColor.GREEN));
-                        Component primaryMessage = ES.vehicleSummonsCheck_alertVehicleLimit(copyCoords, hoverCoords);
-                        ES.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                    }
-                    // Russian Message Workflow
-                    else if(main.Global.configLanguageType == 3)
-                    {
-                        HoverEvent<?> hoverCoords = HoverEvent.showText(Component.text(RU.ClickCopy, NamedTextColor.GREEN));
-                        Component primaryMessage = RU.vehicleSummonsCheck_alertVehicleLimit(copyCoords, hoverCoords);
-                        RU.sendMessageMethod(world, x, z, y, copyCoords, hoverCoords, primaryMessage);
-                    }
                 }
             }
         }
     }
-
-
 }
