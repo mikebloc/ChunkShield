@@ -1,12 +1,3 @@
-
-
-// https://github.com/mikebloc/chunkshield
-// Supports: 26.2
-// Version: 1.0.12
-
-// Dated: September 7, 2026
-
-
 package me.mikebloc.chunkShield;
 import me.mikebloc.chunkShield.languages.EN;
 import me.mikebloc.chunkShield.languages.ES;
@@ -42,11 +33,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-
 public final class main extends JavaPlugin implements Listener
 {
-
-
     private final Map<EntityType, Integer> entityLimits = new HashMap<>();
     private final Map<Material, Integer> blockLimits = new HashMap<>();
     private final Map<EntityType, Integer> namedEntityLimits = new HashMap<>();
@@ -273,12 +261,10 @@ public final class main extends JavaPlugin implements Listener
     }
 
     ////////////////////////////////////////////////////////////////////////////
-
     // 20% - InventoryOpenEvent
     // 10% - CraftItemEvent
     // 20% - EntityDeathEvent
     // 100% - ChunkLoadEvent
-
     /////////////////////////////////////////////////////////////////////////////
 
     // Cords are forced into INT because the Chunk Cords in messages get long and or ugly.

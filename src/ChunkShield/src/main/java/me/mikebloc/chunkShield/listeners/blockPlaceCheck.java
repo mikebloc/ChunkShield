@@ -21,15 +21,12 @@ import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static java.lang.System.getLogger;
 
 
 public final class blockPlaceCheck implements Listener
@@ -40,7 +37,7 @@ public final class blockPlaceCheck implements Listener
         // Ex: REDSTONE is not REDSTONE_WIRE
         public static List<Material> nonItemBlocks = List.of
                 (
-                        Material.REDSTONE_WIRE,
+                        //Material.REDSTONE_WIRE,
                         Material.TRIPWIRE
                 );
     }
@@ -72,9 +69,9 @@ public final class blockPlaceCheck implements Listener
             {
                 if (main.Global.configToggleBlockCheck_50)
                 {
-                    if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
+                    if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
                 }
-                else blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
+                else blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
             }
 
         }
@@ -82,9 +79,9 @@ public final class blockPlaceCheck implements Listener
         {
             if (main.Global.configToggleBlockCheck_50)
             {
-                if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
+                if (ThreadLocalRandom.current().nextBoolean()) blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
             }
-            else blockChunkCheck(e, chunk, placedType, x, y, z, playerName, material, block, player);
+            else blockChunkCheck(chunk, placedType, x, y, z, playerName, material, block, player);
         }
     }
 
@@ -134,7 +131,7 @@ public final class blockPlaceCheck implements Listener
         }
     }
     /////////////////////////////////////////////////////////////////////////////
-    private static void blockChunkCheck(BlockPlaceEvent e, Chunk chunk, Material placedType, int x, int y, int z, String playerName, Material material, Block block, Player player)
+    private static void blockChunkCheck(Chunk chunk, Material placedType, int x, int y, int z, String playerName, Material material, Block block, Player player)
     {
         if (player.hasPermission("chunkShield.blockBypass")) return;
 
@@ -212,14 +209,14 @@ public final class blockPlaceCheck implements Listener
                             {
                                 b.setType(Material.STONE, false); // no physics to avoid cascades
 
-                                player.getServer().getLogger().warning("!!! --- NON-ITEM BLOCK --- !!!  ");
-                                player.getServer().getLogger().warning("■");
-                                player.getServer().getLogger().warning(b.getType() + " just turned into Stone.");
-                                player.getServer().getLogger().warning("Location: " + world.getName() + " [" + x + ", " + y + ", " + z + "]");
-                                player.getServer().getLogger().warning("Report this message to developer to be fixed.");
-                                player.getServer().getLogger().warning("ERROR: " + b.getType() + " is a non-item block.");
-                                player.getServer().getLogger().warning("■");
-                                player.getServer().getLogger().warning("!!! --- NON-ITEM BLOCK --- !!!  ");
+                                player.getServer().getConsoleSender().sendMessage("§c■ §7- - - - - - - §cERROR§7: §cNON ITEM BLOCK §7- - - - - - - §c■");
+                                player.getServer().getConsoleSender().sendMessage("§c■");
+                                player.getServer().getConsoleSender().sendMessage("§c■ §a" + material.name() + " §ejust turned into Stone.");
+                                player.getServer().getConsoleSender().sendMessage("§c■ §a" + material.name() + " §eis a non-item block.");
+                                player.getServer().getConsoleSender().sendMessage("§c■ §eLocation§7: " + "§6" +world.getName() + " §7[" + "§e" + x + "§7, " + "§e" + y + "§7, " + "§e" + z + "§7]");
+                                player.getServer().getConsoleSender().sendMessage("§c■ §6Report this message to developer to be fixed.");
+                                player.getServer().getConsoleSender().sendMessage("§c■");
+                                player.getServer().getConsoleSender().sendMessage("§c■ §7- - - - - - - §cERROR§7: §cNON ITEM BLOCK §7- - - - - - - §c■");
                             }
                         }
                         main.Global.blocksPrevented++;
