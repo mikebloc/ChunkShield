@@ -22,10 +22,6 @@ public final class vehicleSummonsCheck implements Listener
     @EventHandler
     public void onVehicleCreate(VehicleCreateEvent e)
     {
-        int x = (int) e.getVehicle().getLocation().getX();
-        int y = (int) e.getVehicle().getLocation().getY();
-        int z = (int) e.getVehicle().getLocation().getZ();
-
         World world = e.getVehicle().getWorld();
 
         if (main.Global.configToggleVehicleRadiusCheck)
@@ -33,7 +29,7 @@ public final class vehicleSummonsCheck implements Listener
             if (main.Global.configCollectiveVehicletLimit == -1) return;
 
             vehicleGlobal.theVehicle = e.getVehicle();
-            vehicleRadiusScan(world, x, y, z);
+            vehicleRadiusScan(world);
         }
     }
 
@@ -41,10 +37,6 @@ public final class vehicleSummonsCheck implements Listener
     @EventHandler
     public void vehicleMoveCheck (VehicleMoveEvent e)
     {
-        int x = (int) e.getVehicle().getLocation().getX();
-        int y = (int) e.getVehicle().getLocation().getY();
-        int z = (int) e.getVehicle().getLocation().getZ();
-
         World world = e.getVehicle().getWorld();
 
         if (main.Global.configToggleVehicleRadiusCheck)
@@ -52,15 +44,17 @@ public final class vehicleSummonsCheck implements Listener
             if (main.Global.configCollectiveVehicletLimit == -1) return;
 
             vehicleGlobal.theVehicle = e.getVehicle();
-            vehicleRadiusScan(world, x, y, z);
+            vehicleRadiusScan(world);
         }
     }
 
+    public int x;
+    public int y;
+    public int z;
     /////////////////////////////////////////////////////////////////////////////
-    private void vehicleRadiusScan(World world, int x, int y, int z)
+    private void vehicleRadiusScan(World world)
     {
         main.Global.Entity_vehicleCount = 0;
-        // ---- Category totals: BOATS & MINE CARTS
         if (main.Global.configCollectiveVehicletLimit > 0)
         {
             int total = 0;
@@ -68,12 +62,14 @@ public final class vehicleSummonsCheck implements Listener
             {
                 if (entity instanceof Boat || entity instanceof Minecart)
                 {
-                    // This could be simpler but it wont cooperate otherwise.
                     total++;
                     int toRemove = main.Global.configCollectiveVehicletLimit - total;
                     if (toRemove < 1)
                     {
                         entity.remove();
+                        x = (int) entity.getLocation().getX();
+                        y = (int) entity.getLocation().getY();
+                        z = (int) entity.getLocation().getZ();
                         main.Global.Entity_vehicleCount++;
                         entity.getLocation();
                         if (main.Global.Entity_vehicleCount < 10 && main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, entity.getLocation().toCenterLocation(), 4);
