@@ -13,23 +13,18 @@ import org.bukkit.event.vehicle.VehicleMoveEvent;
 
 public final class vehicleSummonsCheck implements Listener
 {
-    public static class vehicleGlobal
-    {
-        public static Vehicle theVehicle;
-    }
-
     ////////////////////////////////////////////////////////////////////////////
     @EventHandler
     public void onVehicleCreate(VehicleCreateEvent e)
     {
         World world = e.getVehicle().getWorld();
+        Entity vehicle = e.getVehicle();
 
         if (main.Global.configToggleVehicleRadiusCheck)
         {
             if (main.Global.configCollectiveVehicletLimit == -1) return;
 
-            vehicleGlobal.theVehicle = e.getVehicle();
-            vehicleRadiusScan(world);
+            vehicleRadiusScan(world, vehicle);
         }
     }
 
@@ -38,13 +33,13 @@ public final class vehicleSummonsCheck implements Listener
     public void vehicleMoveCheck (VehicleMoveEvent e)
     {
         World world = e.getVehicle().getWorld();
+        Entity vehicle = e.getVehicle();
 
         if (main.Global.configToggleVehicleRadiusCheck)
         {
             if (main.Global.configCollectiveVehicletLimit == -1) return;
 
-            vehicleGlobal.theVehicle = e.getVehicle();
-            vehicleRadiusScan(world);
+            vehicleRadiusScan(world, vehicle);
         }
     }
 
@@ -52,13 +47,13 @@ public final class vehicleSummonsCheck implements Listener
     public int y;
     public int z;
     /////////////////////////////////////////////////////////////////////////////
-    private void vehicleRadiusScan(World world)
+    private void vehicleRadiusScan(World world, Entity vehicle)
     {
         main.Global.Entity_vehicleCount = 0;
         if (main.Global.configCollectiveVehicletLimit > 0)
         {
             int total = 0;
-            for (Entity entity : vehicleGlobal.theVehicle.getNearbyEntities(main.Global.configRadiusLimit, main.Global.configRadiusLimit, main.Global.configRadiusLimit))
+            for (Entity entity : vehicle.getNearbyEntities(main.Global.configRadiusLimit, main.Global.configRadiusLimit, main.Global.configRadiusLimit))
             {
                 if (entity instanceof Boat || entity instanceof Minecart)
                 {
