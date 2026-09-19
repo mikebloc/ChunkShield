@@ -154,7 +154,7 @@ public final class main extends JavaPlugin implements Listener
         Global.configToggleAlertVehicleLimit = this.getConfig().getBoolean("VehicleLimits");
 
         Global.configTogglePurgeEffect = this.getConfig().getBoolean("PurgeEffects");
-        Global.configLanguageType = this.getConfig().getInt("lang");
+        Global.configLanguageType = 1;
 
         ConfigurationSection section0 = config.getConfigurationSection("entity-limits");
         if (section0 != null)
