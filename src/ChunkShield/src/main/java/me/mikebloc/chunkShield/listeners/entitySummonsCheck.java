@@ -167,8 +167,8 @@ public final class entitySummonsCheck implements Listener
             if (Named)
             {
                 TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
-                TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax"+ entitySummonNamedCount +" §aNamed " + type + " §eat§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
-                TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+                TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax"+ entitySummonNamedCount +" §aNamed " + type + " §e.");
+                TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
                 for (Player player : Bukkit.getServer().getOnlinePlayers())
                 {
@@ -186,8 +186,8 @@ public final class entitySummonsCheck implements Listener
             else
             {
                 TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
-                TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax"+ entitySummonUnNamedCount + " " + type + " §eat§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
-                TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+                TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax"+ entitySummonUnNamedCount +" " + type + " §e.");
+                TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
                 for (Player player : Bukkit.getServer().getOnlinePlayers())
                 {
@@ -206,8 +206,8 @@ public final class entitySummonsCheck implements Listener
         else
         {
             TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
-            TextComponent message = new TextComponent("§c■ " + "§cCHUNK WARNING§7: §eFound §ax" + length +" §centities near§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
-            TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+            TextComponent message = new TextComponent("§c■ " + "§cCHUNK WARNING§7: §eFound §ax" + length +" §centities§e.");
+            TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
             for (Player player : Bukkit.getServer().getOnlinePlayers())
             {

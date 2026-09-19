@@ -76,8 +76,8 @@ public final class vehicleSummonsCheck implements Listener
             if (main.Global.Entity_vehicleCount > 1 && main.Global.configToggleAlertVehicleLimit)
             {
                 TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
-                TextComponent message = new TextComponent("§c■ " + "§6Vehicle Limit §ewas reached at§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
-                TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+                TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax" + main.Global.Entity_vehicleCount + "§6Vehicle(s)§e.");
+                TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
                 for (Player player : Bukkit.getServer().getOnlinePlayers())
                 {

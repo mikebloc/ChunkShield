@@ -278,8 +278,8 @@ public final class blockPlaceCheck implements Listener
     private static void alertBLOCKLimitReached(int x, int y, int z, String playerName, Block b, World world)
     {
         TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
-        TextComponent message = new TextComponent("§c■ " + "§6" + playerName + " §ereached " + "§c" + b.getType() +" §elimit at§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
-        TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+        TextComponent message = new TextComponent("§c■ " + "§6" + playerName + " §ereached " + "§c" + b.getType() +" §elimit.");
+        TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
         for (Player player : Bukkit.getServer().getOnlinePlayers())
         {
@@ -298,8 +298,8 @@ public final class blockPlaceCheck implements Listener
     private static void alertDOORLimitReached(int x, int y, int z, String playerName, World world)
     {
         TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
-        TextComponent message = new TextComponent("§c■ " + "§6" + playerName + " §ereached " + "§cDoor Limit §eat§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
-        TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+        TextComponent message = new TextComponent("§c■ " + "§6" + playerName + " §ereached " + "§cDoor Limit§e.");
+        TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
         for (Player player : Bukkit.getServer().getOnlinePlayers())
         {

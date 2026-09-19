@@ -404,8 +404,8 @@ public final class main extends JavaPlugin implements Listener
                         if (type != EntityType.FALLING_BLOCK)
                         {
                             TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
-                            TextComponent message = new TextComponent("§c■ §eRemoved §ax" + chunkLoadRemovedUnNamedCount + " §6" + type + " §eat§7: §a[" + x + ", " + y + ", " + z + "§a] §c■");
-                            TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+                            TextComponent message = new TextComponent("§c■ §eRemoved §ax" + chunkLoadRemovedUnNamedCount + " §6" + type + "§e.");
+                            TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
                             for (Player player : Bukkit.getServer().getOnlinePlayers())
                             {
@@ -446,8 +446,8 @@ public final class main extends JavaPlugin implements Listener
                     if (Global.configToggleAlertEntityLimit)
                     {
                         TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
-                        TextComponent message = new TextComponent("§c■ §eRemoved §ax" + chunkLoadRemovedNamedCount + " §6Named " + type + " §eat§7: §a[" + x + ", " + y + ", " + z + "§a] §c■");
-                        TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+                        TextComponent message = new TextComponent("§c■ §eRemoved §ax" + chunkLoadRemovedNamedCount + " §6Named " + type + "§e.");
+                        TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
                         for (Player player : Bukkit.getServer().getOnlinePlayers())
                         {
@@ -476,8 +476,8 @@ public final class main extends JavaPlugin implements Listener
             if (length > Global.configMinEntityWarning && Global.configToggleAlertChunkWarning)
             {
                 TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
-                TextComponent message = new TextComponent("§c■ " + "§cCHUNK WARNING§7: §eFound §ax" + length +" §centities near§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
-                TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+                TextComponent message = new TextComponent("§c■ " + "§cCHUNK WARNING§7: §eFound §ax" + length +" §centities§e.");
+                TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
                 for (Player player : Bukkit.getServer().getOnlinePlayers())
                 {
@@ -498,8 +498,8 @@ public final class main extends JavaPlugin implements Listener
             if (Global.configToggleAlertChunkScanned)
             {
                 TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
-                TextComponent message = new TextComponent("§c■ " + "§cA ChunkScan met §66 conditions §cand removed §ax" + totality +" §centities at§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
-                TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+                TextComponent message = new TextComponent("§c■ " + "§cA ChunkScan met §66 conditions §cand removed §ax" + totality +" §centitie(s)§e.");
+                TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
                 for (Player player : Bukkit.getServer().getOnlinePlayers())
                 {
