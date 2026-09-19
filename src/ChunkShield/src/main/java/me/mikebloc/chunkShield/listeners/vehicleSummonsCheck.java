@@ -82,26 +82,23 @@ public final class vehicleSummonsCheck implements Listener
                 }
             }
 
-            if (main.Global.Entity_vehicleCount > 1)
+            if (main.Global.Entity_vehicleCount > 1 && main.Global.configToggleAlertVehicleLimit)
             {
-                if (main.Global.configToggleAlertVehicleLimit)
+                TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
+                TextComponent message = new TextComponent("§c■ " + "§6Vehicle Limit §ewas reached at§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
+                TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+
+                for (Player player : Bukkit.getServer().getOnlinePlayers())
                 {
-                    TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
-                    TextComponent message = new TextComponent("§c■ " + "§6Vehicle Limit §ewas reached at§7: §a[" + x + ", " + y + ", " + z + "§a]" + " §c■");
-                    TextComponent sub = new TextComponent("§c■ " + "§6Location§7: §a" + world.getName() + " §7/ §6" + x + ", " + y + ", " + z);
+                    if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
+                    if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
+                    if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
+                    if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
 
-                    for (Player player : Bukkit.getServer().getOnlinePlayers())
-                    {
-                        if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
-                        if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(message);
-                        if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(sub);
-                        if (player.hasPermission("chunkShield.alerts")) player.spigot().sendMessage(STYLE);
-
-                        Bukkit.getServer().getLogger().warning(STYLE.getText());
-                        Bukkit.getServer().getLogger().warning(message.getText());
-                        Bukkit.getServer().getLogger().warning(sub.getText());
-                        Bukkit.getServer().getLogger().warning(STYLE.getText());
-                    }
+                    Bukkit.getServer().getLogger().warning(STYLE.getText());
+                    Bukkit.getServer().getLogger().warning(message.getText());
+                    Bukkit.getServer().getLogger().warning(sub.getText());
+                    Bukkit.getServer().getLogger().warning(STYLE.getText());
                 }
             }
         }

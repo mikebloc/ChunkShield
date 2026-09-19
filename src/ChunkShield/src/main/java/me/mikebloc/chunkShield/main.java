@@ -1,16 +1,3 @@
-////////////////////////////////////
-///                              ///
-///            Cutzuu            ///
-///                              ///
-////////////////////////////////////
-
-// https://github.com/cutzuu/chunkshield
-// Supports: 26.2
-// Version: 1.0.11
-
-// Dated: September 1, 2026
-
-
 package me.mikebloc.chunkShield;
 import me.mikebloc.chunkShield.languages.EN;
 import me.mikebloc.chunkShield.languages.ES;
@@ -46,8 +33,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public final class main extends JavaPlugin implements Listener
 {
-
-
     private final Map<EntityType, Integer> entityLimits = new HashMap<>();
     private final Map<Material, Integer> blockLimits = new HashMap<>();
     private final Map<EntityType, Integer> namedEntityLimits = new HashMap<>();
@@ -274,12 +259,10 @@ public final class main extends JavaPlugin implements Listener
     }
 
     ////////////////////////////////////////////////////////////////////////////
-
     // 20% - InventoryOpenEvent
     // 10% - CraftItemEvent
     // 20% - EntityDeathEvent
     // 100% - ChunkLoadEvent
-
     /////////////////////////////////////////////////////////////////////////////
 
     // Cords are forced into INT because the Chunk Cords in messages get long and or ugly.
@@ -498,7 +481,6 @@ public final class main extends JavaPlugin implements Listener
         // Totality tallies all removed listed entities.
         // If there are still a bunch of unlisted entities that surpass the warning level.
         // Let the server know.
-
         if (totality == 0)
         {
             if (length > Global.configMinEntityWarning && Global.configToggleAlertChunkWarning)
