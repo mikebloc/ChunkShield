@@ -75,7 +75,7 @@ public final class vehicleSummonsCheck implements Listener
 
             if (main.Global.Entity_vehicleCount > 1 && main.Global.configToggleAlertVehicleLimit)
             {
-                TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
+                TextComponent STYLE = new TextComponent("§c■ §7- - - - - - - - - - - - - - - - - - - - - - - - - §c■");
                 TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax" + main.Global.Entity_vehicleCount + "§6Vehicle(s)§e.");
                 TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 

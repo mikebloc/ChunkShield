@@ -250,7 +250,8 @@ public final class blockPlaceCheck implements Listener
                                     if (main.Global.configToggleAlertBlockLimit) alertDOORLimitReached(x, y, z, playerName, world);
 
                                     //removed 1.0.10 fix in this port. Discerning halves of doors is not possible.
-                                    b1.breakNaturally();
+                                    if (player.getGameMode() != GameMode.CREATIVE)b1.breakNaturally();
+                                    else b1.setType(Material.AIR, false);
                                     if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b1.getLocation().toCenterLocation(), 4);
                                     main.Global.blocksPrevented++;
                                 }
@@ -277,7 +278,7 @@ public final class blockPlaceCheck implements Listener
 
     private static void alertBLOCKLimitReached(int x, int y, int z, String playerName, Block b, World world)
     {
-        TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
+        TextComponent STYLE = new TextComponent("§c■ §7- - - - - - - - - - - - - - - - - - - - - - - - - §c■");
         TextComponent message = new TextComponent("§c■ " + "§6" + playerName + " §ereached " + "§c" + b.getType() +" §elimit.");
         TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
@@ -297,7 +298,7 @@ public final class blockPlaceCheck implements Listener
 
     private static void alertDOORLimitReached(int x, int y, int z, String playerName, World world)
     {
-        TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
+        TextComponent STYLE = new TextComponent("§c■ §7- - - - - - - - - - - - - - - - - - - - - - - - - §c■");
         TextComponent message = new TextComponent("§c■ " + "§6" + playerName + " §ereached " + "§cDoor Limit§e.");
         TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 

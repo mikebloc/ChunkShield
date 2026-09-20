@@ -166,7 +166,7 @@ public final class entitySummonsCheck implements Listener
         {
             if (Named)
             {
-                TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
+                TextComponent STYLE = new TextComponent("§c■ §7- - - - - - - - - - - - - - - - - - - - - - - - - §c■");
                 TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax"+ entitySummonNamedCount +" §aNamed " + type + " §e.");
                 TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
@@ -185,7 +185,7 @@ public final class entitySummonsCheck implements Listener
             }
             else
             {
-                TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
+                TextComponent STYLE = new TextComponent("§c■ §7- - - - - - - - - - - - - - - - - - - - - - - - - §c■");
                 TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax"+ entitySummonUnNamedCount +" " + type + " §e.");
                 TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
@@ -205,7 +205,7 @@ public final class entitySummonsCheck implements Listener
         }
         else
         {
-            TextComponent STYLE = new TextComponent("§c■ - - - - - - - - - - - - - - - - - - - - - - - - - ■");
+            TextComponent STYLE = new TextComponent("§c■ §7- - - - - - - - - - - - - - - - - - - - - - - - - §c■");
             TextComponent message = new TextComponent("§c■ " + "§cCHUNK WARNING§7: §eFound §ax" + length +" §centities§e.");
             TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
