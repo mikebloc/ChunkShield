@@ -167,7 +167,7 @@ public final class entitySummonsCheck implements Listener
             if (Named)
             {
                 TextComponent STYLE = new TextComponent("§c■ §7- - - - - - - - - - - - - - - - - - - - - - - - - §c■");
-                TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax"+ entitySummonNamedCount +" §aNamed " + type + " §e.");
+                TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax"+ entitySummonNamedCount +" §aNamed " + type + "§e.");
                 TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
                 for (Player player : Bukkit.getServer().getOnlinePlayers())
@@ -186,7 +186,7 @@ public final class entitySummonsCheck implements Listener
             else
             {
                 TextComponent STYLE = new TextComponent("§c■ §7- - - - - - - - - - - - - - - - - - - - - - - - - §c■");
-                TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax"+ entitySummonUnNamedCount +" " + type + " §e.");
+                TextComponent message = new TextComponent("§c■ " + "§eRemoved §ax"+ entitySummonUnNamedCount +" " + type + "§e.");
                 TextComponent sub = new TextComponent("§c■ " + "§eLocation§7: §6" + world.getName() + " §7/ §a[" + x + ", " + y + ", " + z + "]");
 
                 for (Player player : Bukkit.getServer().getOnlinePlayers())
