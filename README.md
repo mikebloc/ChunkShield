@@ -1,5 +1,5 @@
 # 1.8 Branch
-> Currently proof of concept.
+> Somehow works.
 
 Drop a ⭐ to support and stay up to date!
 - Consider [donating!](https://ko-fi.com/mikebloc)
