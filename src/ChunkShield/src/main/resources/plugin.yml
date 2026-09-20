@@ -1,7 +1,7 @@
 name: ChunkShield
 version: '1.0.12'
 main: me.mikebloc.chunkShield.main
-api-version: '26.2'
+api-version: '26.3'
 
 commands:
   reloadconfig:
