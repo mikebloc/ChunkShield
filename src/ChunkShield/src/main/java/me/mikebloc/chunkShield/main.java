@@ -258,7 +258,6 @@ public final class main extends JavaPlugin implements Listener
     // 20% - EntityDeathEvent
     // 100% - ChunkLoadEvent
     /////////////////////////////////////////////////////////////////////////////
-
     // Cords are forced into INT because the Chunk Cords in messages get long and or ugly.
     @EventHandler
     public void openInventory1(InventoryOpenEvent e)
