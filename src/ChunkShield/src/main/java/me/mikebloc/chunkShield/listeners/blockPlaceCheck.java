@@ -9,7 +9,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
@@ -39,7 +38,6 @@ public final class blockPlaceCheck implements Listener
         Material material = block.getType();
         Player player = e.getPlayer();
         PlayerInventory inventory = e.getPlayer().getInventory();
-        ItemStack secondHand = inventory.getItemInOffHand();
 
         int x = e.getBlock().getX();
         int y = e.getBlock().getY();
@@ -50,7 +48,7 @@ public final class blockPlaceCheck implements Listener
         // Patch to prevent unnecessary portal destruction.
         if (block.getType() == Material.ENDER_PORTAL_FRAME)
         {
-            if (main.Global.configToggleEndPortalFix) againstEndPortalCheck(e, player, secondHand, inventory);
+            if (main.Global.configToggleEndPortalFix) againstEndPortalCheck(e, player, inventory);
             else
             {
                 if (main.Global.configToggleBlockCheck_50)
@@ -77,33 +75,17 @@ public final class blockPlaceCheck implements Listener
     //If normally limited, it breaks end portals.
     //This however, prevents placing them without ruining portals.
     //Why the fix? If you interact with a portal, that can also trigger a removal if limited bc the frame block is updated.
-    private static void againstEndPortalCheck(BlockPlaceEvent e, Player player, ItemStack secondHand, PlayerInventory inventory)
+    private static void againstEndPortalCheck(BlockPlaceEvent e, Player player, PlayerInventory inventory)
     {
         if (player.hasPermission("chunkShield.blockBypass")) return;
         if (e.getBlockAgainst().getType() == Material.ENDER_PORTAL_FRAME)
         {
-            // Main Hand Check
-            if (player.getInventory().getItemInMainHand().getType() == Material.EYE_OF_ENDER)
+            // Check1
+            if (player.getInventory().getItemInHand().getType() == Material.ENDER_PORTAL_FRAME)
             {
-                // Check1
-                if (secondHand.getType() == Material.ENDER_PORTAL_FRAME)
-                {
-                    e.setCancelled(true);
-                    main.Global.blocksPrevented++;
-                    inventory.setItemInOffHand(null);
-                    inventory.remove(Material.ENDER_PORTAL_FRAME);
-                }
-            }
-            // Offhand Check
-            else if (player.getInventory().getItemInOffHand().getType() == Material.EYE_OF_ENDER)
-            {
-                // Check1
-                if (player.getInventory().getItemInMainHand().getType() == Material.ENDER_PORTAL_FRAME)
-                {
-                    e.setCancelled(true);
-                    main.Global.blocksPrevented++;
-                    inventory.remove(Material.ENDER_PORTAL_FRAME);
-                }
+                e.setCancelled(true);
+                main.Global.blocksPrevented++;
+                inventory.remove(Material.ENDER_PORTAL_FRAME);
             }
         }
         else
@@ -111,7 +93,6 @@ public final class blockPlaceCheck implements Listener
             e.setCancelled(true);
             main.Global.blocksPrevented++;
             inventory.remove(Material.ENDER_PORTAL_FRAME);
-            if (secondHand.getType() == Material.ENDER_PORTAL_FRAME) inventory.setItemInOffHand(null);
         }
     }
     /////////////////////////////////////////////////////////////////////////////
@@ -167,14 +148,12 @@ public final class blockPlaceCheck implements Listener
                     for (int i = limit; i < matches.size(); i++)
                     {
                         Block b = matches.get(i);
-                        if (placedType.isItem())
+                        if (placedType.isBlock())
                         {
                             if (main.Global.configToggleAlertBlockLimit) alertBLOCKLimitReached(x, y, z, playerName, b, world);
 
                             if (player.getGameMode() != GameMode.CREATIVE)b.breakNaturally();
                             else b.setType(Material.AIR, false);
-                            if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b.getLocation().toCenterLocation(), 4);
-
                         }
                         else
                         {
@@ -187,7 +166,6 @@ public final class blockPlaceCheck implements Listener
                             {
                                 if (player.getGameMode() != GameMode.CREATIVE)b.breakNaturally();
                                 else b.setType(Material.AIR, false);
-                                if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b.getLocation().toCenterLocation(), 4);
                             }
                             else
                             {
@@ -252,7 +230,6 @@ public final class blockPlaceCheck implements Listener
                                     //removed 1.0.10 fix in this port. Discerning halves of doors is not possible.
                                     if (player.getGameMode() != GameMode.CREATIVE)b1.breakNaturally();
                                     else b1.setType(Material.AIR, false);
-                                    if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b1.getLocation().toCenterLocation(), 4);
                                     main.Global.blocksPrevented++;
                                 }
                             }
@@ -265,7 +242,6 @@ public final class blockPlaceCheck implements Listener
 
                                     if (player.getGameMode() != GameMode.CREATIVE)b1.breakNaturally();
                                     else b1.setType(Material.AIR, false);
-                                    if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, b1.getLocation().toCenterLocation(), 4);
                                     main.Global.blocksPrevented++;
                                 }
                             }

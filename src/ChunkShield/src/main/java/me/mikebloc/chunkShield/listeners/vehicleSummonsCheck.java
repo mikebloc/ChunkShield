@@ -3,7 +3,6 @@ package me.mikebloc.chunkShield.listeners;
 import me.mikebloc.chunkShield.main;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -67,7 +66,6 @@ public final class vehicleSummonsCheck implements Listener
                         z = (int) entity.getLocation().getZ();
                         main.Global.Entity_vehicleCount++;
                         entity.getLocation();
-                        if (main.Global.Entity_vehicleCount < 10 && main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, entity.getLocation().toCenterLocation(), 4);
                         main.Global.vehiclesPrevented++;
                     }
                 }

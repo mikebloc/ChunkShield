@@ -267,7 +267,7 @@ public final class main extends JavaPlugin implements Listener
 
         if (Global.configToggleScanChunkUponOpeningContainer)
         {
-            Chunk chunk = e.getPlayer().getChunk();
+            Chunk chunk = e.getPlayer().getWorld().getChunkAt(e.getPlayer().getLocation());
             // 10% chance to check chunk upon opening any chest, barrel, enderChest.
             int roll = ThreadLocalRandom.current().nextInt(1, 11); // 10% chance.
             if (roll == 10)
@@ -288,7 +288,7 @@ public final class main extends JavaPlugin implements Listener
         if (Global.configToggleScanChunkUponCrafting)
         {
             // 10% chance to check chunk upon crafting something.
-            Chunk chunk = e.getWhoClicked().getChunk();
+            Chunk chunk = e.getWhoClicked().getWorld().getChunkAt(e.getWhoClicked().getLocation());
             int roll = ThreadLocalRandom.current().nextInt(1, 11); // 10% chance.
             if (roll == 10) chunkCleansingCheck(world, chunk, x, z, y);
         }
@@ -307,7 +307,7 @@ public final class main extends JavaPlugin implements Listener
         if (Global.configToggleScanChunkUponEntityDying)
         {
             // 10% chance to check chunk upon an Entity dying.
-            Chunk chunk = e.getEntity().getChunk();
+            Chunk chunk = e.getEntity().getWorld().getChunkAt(e.getEntity().getLocation());
             int roll = ThreadLocalRandom.current().nextInt(1, 11); // 10% chance.
             if (roll == 10) chunkCleansingCheck(world, chunk, x, z, y);
         }

@@ -4,7 +4,6 @@ import me.mikebloc.chunkShield.main;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -98,10 +97,6 @@ public final class entitySummonsCheck implements Listener
                 for (entitySummonUnNamedCount = 0; entitySummonUnNamedCount < toRemove; entitySummonUnNamedCount++)
                 {
                     list.get(entitySummonUnNamedCount).remove();
-                    if (entitySummonUnNamedCount < 10)
-                    {
-                        if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, list.get(entitySummonUnNamedCount).getLocation().toCenterLocation(), 4);
-                    }
                     main.Global.entitiesRemoved++;
                 }
                 if (entitySummonUnNamedCount != 0)
@@ -135,10 +130,6 @@ public final class entitySummonsCheck implements Listener
                 for (entitySummonNamedCount = 0; entitySummonNamedCount < toRemove; entitySummonNamedCount++)
                 {
                     list.get(entitySummonNamedCount).remove();
-                    if (entitySummonNamedCount < 10)
-                    {
-                        if(main.Global.configTogglePurgeEffect) world.spawnParticle(Particle.LAVA, list.get(entitySummonNamedCount).getLocation().toCenterLocation(), 4);
-                    }
                     main.Global.entitiesRemoved++;
                 }
                 if (entitySummonNamedCount != 0)
