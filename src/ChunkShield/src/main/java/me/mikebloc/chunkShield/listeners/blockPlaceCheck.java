@@ -153,7 +153,7 @@ public final class blockPlaceCheck implements Listener
                             if (main.Global.configToggleAlertBlockLimit) alertBLOCKLimitReached(x, y, z, playerName, b, world);
 
                             if (player.getGameMode() != GameMode.CREATIVE)b.breakNaturally();
-                            else b.setType(Material.AIR, false);
+                            else b.setType(Material.AIR);
                         }
                         else
                         {
@@ -165,11 +165,11 @@ public final class blockPlaceCheck implements Listener
                             if (Global.nonItemBlocks.contains(b.getType()) && main.Global.theBlockLimits.containsKey(b.getType()))
                             {
                                 if (player.getGameMode() != GameMode.CREATIVE)b.breakNaturally();
-                                else b.setType(Material.AIR, false);
+                                else b.setType(Material.AIR);
                             }
                             else
                             {
-                                b.setType(Material.STONE, false); // no physics to avoid cascades
+                                b.setType(Material.STONE); // no physics to avoid cascades
 
                                 player.getServer().getConsoleSender().sendMessage("§c■ §7- - - - - - - §cERROR§7: §cNON ITEM BLOCK §7- - - - - - - §c■");
                                 player.getServer().getConsoleSender().sendMessage("§c■");
@@ -229,7 +229,7 @@ public final class blockPlaceCheck implements Listener
 
                                     //removed 1.0.10 fix in this port. Discerning halves of doors is not possible.
                                     if (player.getGameMode() != GameMode.CREATIVE)b1.breakNaturally();
-                                    else b1.setType(Material.AIR, false);
+                                    else b1.setType(Material.AIR);
                                     main.Global.blocksPrevented++;
                                 }
                             }
@@ -241,7 +241,7 @@ public final class blockPlaceCheck implements Listener
                                     if (main.Global.configToggleAlertBlockLimit) alertDOORLimitReached(x, y, z, playerName, world);
 
                                     if (player.getGameMode() != GameMode.CREATIVE)b1.breakNaturally();
-                                    else b1.setType(Material.AIR, false);
+                                    else b1.setType(Material.AIR);
                                     main.Global.blocksPrevented++;
                                 }
                             }

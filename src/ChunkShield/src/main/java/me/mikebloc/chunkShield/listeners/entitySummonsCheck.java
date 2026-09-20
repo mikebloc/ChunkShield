@@ -73,7 +73,7 @@ public final class entitySummonsCheck implements Listener
             //If the chunk contains no listed entities, move on.
             if (!main.Global.theEntityLimits.containsKey(entity.getType())) continue;
 
-            boolean isNamed = entity.getCustomName() != null;
+            boolean isNamed = !entity.getType().name().isEmpty();
             (isNamed ? namedEntityList : unnamedEntityList)
                     .computeIfAbsent(entity.getType(), k -> new ArrayList<>())
                     .add(entity);

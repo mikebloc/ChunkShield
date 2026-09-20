@@ -369,7 +369,7 @@ public final class main extends JavaPlugin implements Listener
             EntityType type = entity.getType();
             if (!Global.theEntityLimits.containsKey(type)) continue;
 
-            boolean isNamed = entity.getCustomName() != null;
+            boolean isNamed = !entity.getType().name().isEmpty();
             (isNamed ? namedMap : unnamedMap)
                     .computeIfAbsent(type, k -> new ArrayList<>())
                     .add(entity);
