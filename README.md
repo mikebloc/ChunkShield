@@ -1,5 +1,5 @@
-# 1.12 Branch
-> Legacy support. Has only been tested for 1.12.2 but should be compatible with 1.12.x
+# 1.8 Branch
+> Currently proof of concept.
 
 Drop a ⭐ to support and stay up to date!
 - Consider [donating!](https://ko-fi.com/mikebloc)
